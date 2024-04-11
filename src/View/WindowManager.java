@@ -1,11 +1,14 @@
 package View;
 
+import java.awt.event.KeyListener;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class WindowManager {
   public static final int WIDTH = 800;
   public static final int HEIGHT = 600;
-  private static JFrame frame;
+  private JFrame frame;
+  private JPanel panel;
 
   public WindowManager() {
     frame = new JFrame("FILL TITLE HERE");
@@ -14,8 +17,16 @@ public class WindowManager {
     frame.setResizable(false);
   }
 
-  public static void createWindow() {
+  public void addPanel(JPanel panel){
+    this.panel = panel;
+  }
 
-    frame.setVisible(true);
+  public void addKeyListener(KeyListener listener) {
+    this.panel.addKeyListener(listener);
+  }
+
+  public void createWindow() {
+    this.frame.add(panel);
+    this.frame.setVisible(true);
   }
 }
