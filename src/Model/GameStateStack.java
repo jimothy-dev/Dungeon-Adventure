@@ -22,10 +22,6 @@ public class GameStateStack {
     this.states.clear();
   }
 
-  public void init() {
-    this.states.peek().init();
-  }
-
   public void loop() {
     try {
       this.states.peek().loop();

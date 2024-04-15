@@ -49,6 +49,7 @@ public class Game {
   private static class Keyboard implements KeyListener {
     @Override
     public void keyTyped(KeyEvent key) {
+      gameStateStack.keyPressed(key.getKeyCode());
     }
     @Override
     public void keyPressed(KeyEvent key) {
