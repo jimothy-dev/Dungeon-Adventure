@@ -11,7 +11,7 @@ import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class Game {
+public class GameController {
   private static GameStateStack gameStateStack;
   private static WindowManager windowManager;
   private static Timer timer;

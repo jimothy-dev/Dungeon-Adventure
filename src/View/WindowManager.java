@@ -12,7 +12,7 @@ public class WindowManager {
   private JPanel panel;
 
   public WindowManager() {
-    frame = new JFrame("FILL TITLE HERE");
+    frame = new JFrame("Dungeon Adventure");
     frame.setBounds(70, 70, 0, 0);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setResizable(false);
