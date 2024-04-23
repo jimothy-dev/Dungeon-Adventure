@@ -24,6 +24,7 @@ public class MainMenu extends GameState {
   private final String[] optionMenu;
   private int selected;
   private Image selectorImage;
+  private Image menuBackgroundImage;
 
 
   public MainMenu(GameStateStack manager, MusicManager theMM, SoundEffectsManager theSEM) {
@@ -37,6 +38,7 @@ public class MainMenu extends GameState {
 
     try {
       selectorImage = ImageIO.read(new File("src/Assets/Images/skeleton1.png"));
+      menuBackgroundImage = ImageIO.read(new File("src/Assets/Images/title.png"));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -48,7 +50,9 @@ public class MainMenu extends GameState {
 
   @Override
   protected void render(Graphics graphics) {
-    graphics.setColor(new Color(30, 30, 70));
+    graphics.drawImage(menuBackgroundImage, 0, 0, WindowManager.getWidth(),
+                       WindowManager.getHeight(), null);
+    graphics.setColor(new Color(30, 30, 70,120));
     graphics.fillRect(0, 0, WindowManager.getWidth(), WindowManager.getHeight());
     graphics.setFont(new Font("Arial", Font.PLAIN, 25));
     int optionHeight = graphics.getFontMetrics().getHeight();
@@ -60,7 +64,8 @@ public class MainMenu extends GameState {
       int xStart = (WindowManager.getWidth() - textWidth) / 2;
       if (i == selected) {
         graphics.setColor(Color.magenta);
-        graphics.drawImage(selectorImage, xStart - selectorImage.getWidth(null) - 5, yStart + i * optionHeight - optionHeight / 2, null);
+        graphics.drawImage(selectorImage, xStart - selectorImage.getWidth(null) - 5,
+                        yStart + i * optionHeight - optionHeight / 2, null);
       } else {
         graphics.setColor(Color.white);
       }
