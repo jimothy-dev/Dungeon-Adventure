@@ -12,18 +12,25 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class GameController {
+  //This class currently handles both the game loop and window management, which could be separated
   private static GameStateStack gameStateStack;
   private static WindowManager windowManager;
   private static Timer timer;
+  private static MusicManager musicManager;
+  private static SoundEffectsManager soundEffectsManager;
 
   public static void init() {
     gameStateStack  = new GameStateStack();
     windowManager = new WindowManager();
     timer = new Timer(20, new MainGameLoop());
+    musicManager = new MusicManager();
+    soundEffectsManager = new SoundEffectsManager();
+    musicManager.loadAllBackgroundMusic();
+    soundEffectsManager.loadAllSoundEffects();
   }
 
   public static void start() {
-    gameStateStack.addState(new MainMenu(gameStateStack));
+    gameStateStack.addState(new MainMenu(gameStateStack, musicManager, soundEffectsManager));
     windowManager.addPanel(new GameScreen());
     windowManager.addKeyListener(new Keyboard());
     windowManager.createWindow();
@@ -32,16 +39,16 @@ public class GameController {
 
   private static class MainGameLoop implements ActionListener {
     @Override
-    public void actionPerformed(ActionEvent arg){
+    public void actionPerformed(ActionEvent theEvent){
       gameStateStack.loop();
     }
   }
 
   private static class GameScreen extends JPanel {
     @Override
-    protected void paintComponent(Graphics g) {
-      super.paintComponent(g);
-      gameStateStack.render(g);
+    protected void paintComponent(Graphics theGraphics) {
+      super.paintComponent(theGraphics);
+      gameStateStack.render(theGraphics);
       repaint();
     }
   }
@@ -49,15 +56,16 @@ public class GameController {
   private static class Keyboard implements KeyListener {
     @Override
     public void keyTyped(KeyEvent key) {
-      gameStateStack.keyPressed(key.getKeyCode());
     }
+
     @Override
     public void keyPressed(KeyEvent key) {
       gameStateStack.keyPressed(key.getKeyCode());
     }
+
     @Override
     public void keyReleased(KeyEvent key) {
-      gameStateStack.keyPressed(key.getKeyCode());
+      gameStateStack.keyReleased(key.getKeyCode());
     }
   }
 }

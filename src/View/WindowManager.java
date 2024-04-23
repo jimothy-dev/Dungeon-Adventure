@@ -6,9 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class WindowManager {
-  public static final int WIDTH = 800;
-  public static final int HEIGHT = 600;
-  private JFrame frame;
+  private static final int WIDTH = 800; //Should these be private and have getters?
+  private static final int HEIGHT = 600;
+  private final JFrame frame;
   private JPanel panel;
 
   public WindowManager() {
@@ -26,7 +26,7 @@ public class WindowManager {
   }
 
   public void addKeyListener(KeyListener listener) {
-    try {
+        try {
       this.panel.addKeyListener(listener);
     } catch(NullPointerException e) {
       System.err.println("[WindowManager]: Error! Tried to add KeyListener before JPanel");
@@ -38,5 +38,13 @@ public class WindowManager {
     this.frame.setContentPane(panel);
     this.frame.pack();
     this.frame.setVisible(true);
+  }
+
+  public static int getHeight() {
+    return HEIGHT;
+  }
+
+  public static int getWidth() {
+    return WIDTH;
   }
 }
