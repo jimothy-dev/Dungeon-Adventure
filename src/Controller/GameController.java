@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -16,17 +17,17 @@ public class GameController {
   private static GameScreenStack gameScreenStack;
   private static FrameManager frameManager;
   private static Timer timer;
-  private static MusicManager musicManager;
-  private static SoundEffectsManager soundEffectsManager;
+  private static AudioManager musicManager;
+  private static AudioManager soundEffectsManager;
 
   public static void init() {
     gameScreenStack = new GameScreenStack();
     frameManager = new FrameManager();
     timer = new Timer(20, new MainGameLoop());
-    musicManager = new MusicManager();
-    soundEffectsManager = new SoundEffectsManager();
-    musicManager.loadAllBackgroundMusic();
-    soundEffectsManager.loadAllSoundEffects();
+    musicManager = new AudioManager();
+    soundEffectsManager = new AudioManager();
+    musicManager.loadAllAudio(new File("src/Assets/BackgroundMusic"));
+    soundEffectsManager.loadAllAudio(new File("src/Assets/SoundEffects"));
   }
 
   public static void start() {

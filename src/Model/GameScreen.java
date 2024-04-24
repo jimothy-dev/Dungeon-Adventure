@@ -1,20 +1,19 @@
 package Model;
 
-import Controller.MusicManager;
-import Controller.SoundEffectsManager;
+import Controller.AudioManager;
 
 import java.awt.Graphics;
 
 public abstract class GameScreen {
-  protected GameScreenStack gameScreenStack;
-  protected MusicManager musicManager;
-  protected SoundEffectsManager soundEffectsManager;
+  protected GameScreenStack gameScreenManager;
+  protected AudioManager musicManager;
+  protected AudioManager soundManager;
 
   protected GameScreen(GameScreenStack manager) {
     this.gameScreenStack = manager;
   }
 
-  public void setSoundManager(MusicManager musicManager) {
+  public void setAudioManagers(AudioManager musicManager, AudioManager soundManager) {
     this.musicManager = musicManager;
   }
 

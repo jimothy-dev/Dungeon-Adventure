@@ -1,8 +1,7 @@
 package View;
 
 import Controller.MazeGenerator;
-import Controller.MusicManager;
-import Controller.SoundEffectsManager;
+import Controller.AudioManager;
 import Model.GameScreen;
 import Model.GameScreenStack;
 import java.awt.Color;
@@ -38,11 +37,11 @@ public class MainMenu extends GameScreen {
   private boolean mysteryUnlock;
 
 
-  public MainMenu(GameScreenStack manager, MusicManager theMM, SoundEffectsManager theSEM) {
+  public MainMenu(GameScreenStack manager, AudioManager theMM, AudioManager theSEM) {
       super(manager);
       this.optionMenu = new String[] {START_GAME, POLYMORPHISM, ENCAPSULATION, INHERITANCE, ABSTRACTION, MYSTERY, QUIT_GAME};
       this.musicManager = theMM;
-      this.soundEffectsManager = theSEM;
+      this.soundManager = theSEM;
       this.selected = 0;
       abstractionUnlock = false;
       inheritanceUnlock = false;
@@ -89,6 +88,7 @@ public class MainMenu extends GameScreen {
         }
       }
       graphics.drawString(optionText, xStart, yStart + i * optionHeight);
+
     }
   }
 
@@ -129,17 +129,17 @@ public class MainMenu extends GameScreen {
 
   @Override
   protected void playBackgroundMusic() {
-    musicManager.playBackgroundMusic(START_MENU_MUSIC);
+    musicManager.playAudio(START_MENU_MUSIC);
   }
 
   @Override
   protected void stopBackgroundMusic() {
-    musicManager.stopBackgroundMusic();
+    musicManager.stopAudio();
   }
 
   @Override
   protected void playSoundEffect(String effectName) {
-    soundEffectsManager.playSoundEffect(effectName);
+    soundManager.playAudio(effectName);
   }
 
   private boolean isOptionEnabled(int index) {

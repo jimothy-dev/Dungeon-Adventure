@@ -8,15 +8,18 @@ import java.util.Stack;
 
 public class GameScreenStack {
   private Stack<GameScreen> screens;
-  private MusicManager musicManager;
+  private AudioManager musicManager;
+  private AudioManager soundManager;
 
 
   public GameScreenStack() {
     this.screens = new Stack<>();
-    this.musicManager = new MusicManager();
+    this.musicManager = new AudioManager();
+    this.soundManager = new AudioManager();
   }
+
   public void addState(GameScreen state) {
-    state.setSoundManager(musicManager);
+    state.setAudioManagers(musicManager, soundManager);
     this.screens.add(state);
 
   }
