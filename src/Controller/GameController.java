@@ -30,7 +30,7 @@ public class GameController {
   }
 
   public static void start() {
-    gameScreenStack.addState(new MainMenu(gameScreenStack, musicManager, soundEffectsManager));
+    gameScreenStack.addScreen(new MainMenu(gameScreenStack, musicManager, soundEffectsManager));
     frameManager.addPanel(new GameScreen());
     frameManager.addKeyListener(new Keyboard());
     frameManager.createWindow();

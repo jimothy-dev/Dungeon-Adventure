@@ -15,9 +15,9 @@ public class GameScreenStack {
     this.screens = new Stack<>();
     this.musicManager = new MusicManager();
   }
-  public void addState(GameScreen state) {
-    state.setSoundManager(musicManager);
-    this.screens.add(state);
+  public void addScreen(GameScreen screen) {
+    screen.setSoundManager(musicManager);
+    this.screens.add(screen);
 
   }
 
