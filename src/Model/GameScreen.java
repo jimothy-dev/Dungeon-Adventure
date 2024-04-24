@@ -5,7 +5,7 @@ import Controller.AudioManager;
 import java.awt.Graphics;
 
 public abstract class GameScreen {
-  protected GameScreenStack gameScreenManager;
+  protected GameScreenStack gameScreenStack;
   protected AudioManager musicManager;
   protected AudioManager soundManager;
 
