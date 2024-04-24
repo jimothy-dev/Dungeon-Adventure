@@ -108,12 +108,12 @@ public class MainMenu extends GameState {
 
   @Override
   protected void playBackgroundMusic() {
-    musicManager.playBackgroundMusic(START_MENU_MUSIC);
+    musicManager.playAudio(START_MENU_MUSIC);
   }
 
   @Override
   protected void stopBackgroundMusic() {
-    musicManager.stopBackgroundMusic();
+    musicManager.stopAudio();
   }
 
   @Override

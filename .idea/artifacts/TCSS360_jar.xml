@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TCSS360:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/TCSS360_jar</output-path>
+    <root id="archive" name="TCSS360.jar">
+      <element id="module-output" name="TCSS360" />
+    </root>
+  </artifact>
+</component>

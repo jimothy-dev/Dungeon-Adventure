@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -25,8 +26,8 @@ public class GameController {
     timer = new Timer(20, new MainGameLoop());
     musicManager = new MusicManager();
     soundEffectsManager = new SoundEffectsManager();
-    musicManager.loadAllBackgroundMusic();
-    soundEffectsManager.loadAllSoundEffects();
+    musicManager.loadAllAudio(new File("src/Assets/BackgroundMusic"));
+    soundEffectsManager.loadAllAudio(new File("src/Assets/SoundEffects"));
   }
 
   public static void start() {
