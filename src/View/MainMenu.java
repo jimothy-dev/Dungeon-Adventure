@@ -110,10 +110,11 @@ public class MainMenu extends GameScreen {
         playSoundEffect(SELECT_EFFECT);
         switch(this.optionMenu[selected]) {
           case START_GAME:
-            MazeGenerator generator = new MazeGenerator();
-            while(!generator.finished()) {
-              generator.generate();
-            }
+            gameScreenStack.addState(new CharacterScreen(gameScreenStack));
+//            MazeGenerator generator = new MazeGenerator();
+//            while(!generator.finished()) {
+//              generator.generate();
+//            }
             break;
           case QUIT_GAME:
             System.exit(0);
