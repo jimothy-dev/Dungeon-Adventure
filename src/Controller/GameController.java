@@ -17,15 +17,15 @@ public class GameController {
   private static GameStateStack gameStateStack;
   private static WindowManager windowManager;
   private static Timer timer;
-  private static MusicManager musicManager;
-  private static SoundEffectsManager soundEffectsManager;
+  private static AudioManager musicManager;
+  private static AudioManager soundEffectsManager;
 
   public static void init() {
     gameStateStack  = new GameStateStack();
     windowManager = new WindowManager();
     timer = new Timer(20, new MainGameLoop());
-    musicManager = new MusicManager();
-    soundEffectsManager = new SoundEffectsManager();
+    musicManager = new AudioManager();
+    soundEffectsManager = new AudioManager();
     musicManager.loadAllAudio(new File("src/Assets/BackgroundMusic"));
     soundEffectsManager.loadAllAudio(new File("src/Assets/SoundEffects"));
   }

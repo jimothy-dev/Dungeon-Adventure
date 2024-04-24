@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Parent class for managing audio files and clips.
  */
-public abstract class AudioManager {
+public class AudioManager {
 
     /**
      * Map of audio clips.
@@ -73,6 +73,20 @@ public abstract class AudioManager {
         Clip clip = AudioSystem.getClip();
         clip.open(audioStream);
         return clip;
+    }
+
+    /**
+     * Called from game states to play their requested audio.
+     *
+     * @param key used to access clip within the hash map.
+     */
+    public void playAudio(String key) {
+        stopAudio();
+        currentClip = audioClips.get(key.replaceFirst("[.][^.]+$", "").toLowerCase());
+        if (currentClip != null) {
+            currentClip.loop(Clip.LOOP_CONTINUOUSLY);
+            currentClip.start();
+        }
     }
 
     /**

@@ -1,7 +1,6 @@
 package View;
 
-import Controller.MusicManager;
-import Controller.SoundEffectsManager;
+import Controller.AudioManager;
 import Model.GameState;
 import Model.GameStateStack;
 import java.awt.Color;
@@ -27,11 +26,11 @@ public class MainMenu extends GameState {
   private Image menuBackgroundImage;
 
 
-  public MainMenu(GameStateStack manager, MusicManager theMM, SoundEffectsManager theSEM) {
+  public MainMenu(GameStateStack manager, AudioManager theMM, AudioManager theSEM) {
       super(manager);
       this.optionMenu = new String[] {START_GAME, QUIT_GAME};
       this.musicManager = theMM;
-      this.soundEffectsManager = theSEM;
+      this.soundManager = theSEM;
       this.selected = 0;
 
       playBackgroundMusic();
@@ -118,6 +117,6 @@ public class MainMenu extends GameState {
 
   @Override
   protected void playSoundEffect(String effectName) {
-    soundEffectsManager.playSoundEffect(effectName);
+    soundManager.playAudio(effectName);
   }
 }
