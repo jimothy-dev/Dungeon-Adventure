@@ -18,6 +18,11 @@ import java.io.File;
 //Licensed under Creative Commons by Attribution 4.0
 public class MainMenu extends GameScreen {
   private static final String START_GAME = "Start Game";
+  private static final String POLYMORPHISM = "Polymorphism";
+  private static final String ENCAPSULATION = "Encapsulation";
+  private static final String INHERITANCE = "Inheritance";
+  private static final String ABSTRACTION = "Abstraction";
+  private static String MYSTERY = "???????";
   private static final String QUIT_GAME = "Quit Game";
   private static final String SELECT_EFFECT = "steelsword.wav";
   private static final String SWITCH_EFFECT = "215029__taira-komori__extracting_knife.wav";
@@ -26,15 +31,24 @@ public class MainMenu extends GameScreen {
   private int selected;
   private Image selectorImage;
   private Image menuBackgroundImage;
+  private boolean abstractionUnlock;
+  private boolean inheritanceUnlock;
+  private boolean encapsulationUnlock;
+  private boolean polymorphismUnlock;
+  private boolean mysteryUnlock;
 
 
   public MainMenu(GameScreenStack manager, MusicManager theMM, SoundEffectsManager theSEM) {
       super(manager);
-      this.optionMenu = new String[] {START_GAME, QUIT_GAME};
+      this.optionMenu = new String[] {START_GAME, POLYMORPHISM, ENCAPSULATION, INHERITANCE, ABSTRACTION, MYSTERY, QUIT_GAME};
       this.musicManager = theMM;
       this.soundEffectsManager = theSEM;
       this.selected = 0;
-
+      abstractionUnlock = false;
+      inheritanceUnlock = false;
+      encapsulationUnlock = false;
+      polymorphismUnlock = false;
+      mysteryUnlock = false;
       playBackgroundMusic();
 
     try {
@@ -52,7 +66,7 @@ public class MainMenu extends GameScreen {
   @Override
   protected void render(Graphics graphics) {
     graphics.drawImage(menuBackgroundImage, 0, 0, FrameManager.getWidth(),
-                       FrameManager.getHeight(), null);
+        FrameManager.getHeight(), null);
     graphics.setColor(new Color(30, 30, 70,120));
     graphics.fillRect(0, 0, FrameManager.getWidth(), FrameManager.getHeight());
     graphics.setFont(new Font("Arial", Font.PLAIN, 25));
@@ -66,12 +80,15 @@ public class MainMenu extends GameScreen {
       if (i == selected) {
         graphics.setColor(Color.magenta);
         graphics.drawImage(selectorImage, xStart - selectorImage.getWidth(null) - 5,
-                        yStart + i * optionHeight - optionHeight / 2, null);
+            yStart + i * optionHeight - optionHeight / 2, null);
       } else {
-        graphics.setColor(Color.white);
+        if (isOptionEnabled(i)) {
+          graphics.setColor(Color.white);
+        } else {
+          graphics.setColor(Color.gray); // Grey out disabled options
+        }
       }
       graphics.drawString(optionText, xStart, yStart + i * optionHeight);
-
     }
   }
 
@@ -123,5 +140,44 @@ public class MainMenu extends GameScreen {
   @Override
   protected void playSoundEffect(String effectName) {
     soundEffectsManager.playSoundEffect(effectName);
+  }
+
+  private boolean isOptionEnabled(int index) {
+    switch (index) {
+      case 0:
+      case 6:
+        return true;
+      case 1:
+        return polymorphismUnlock;
+      case 2:
+        return encapsulationUnlock;
+      case 3:
+        return inheritanceUnlock;
+      case 4:
+        return abstractionUnlock;
+      case 5:
+        return mysteryUnlock;
+      default:
+        return false;
+    }
+  }
+
+  private void unlockMystery(){
+    optionMenu[5] = "Final Level";
+  }
+
+  private void unlockLevel(int index) {
+    switch (index) {
+      case 1:
+        polymorphismUnlock = true;
+      case 2:
+        encapsulationUnlock = true;
+      case 3:
+        inheritanceUnlock = true;
+      case 4:
+        abstractionUnlock = true;
+      case 5:
+        mysteryUnlock = true;
+    }
   }
 }
