@@ -6,32 +6,32 @@ import java.awt.Graphics;
 import java.util.EmptyStackException;
 import java.util.Stack;
 
-public class GameStateStack {
-  private Stack<GameState> states;
+public class GameScreenStack {
+  private Stack<GameScreen> screens;
   private MusicManager musicManager;
 
 
-  public GameStateStack() {
-    this.states = new Stack<>();
+  public GameScreenStack() {
+    this.screens = new Stack<>();
     this.musicManager = new MusicManager();
   }
-  public void addState(GameState state) {
+  public void addState(GameScreen state) {
     state.setSoundManager(musicManager);
-    this.states.add(state);
+    this.screens.add(state);
 
   }
 
   public void backToPreviousState() {
-    this.states.pop();
+    this.screens.pop();
   }
 
   public void clearStack() {
-    this.states.clear();
+    this.screens.clear();
   }
 
   public void loop() {
     try {
-      this.states.peek().loop();
+      this.screens.peek().loop();
     } catch(EmptyStackException e) {
       System.err.println("[GameStateManager]: GameState stack is empty!");
       System.exit(-1);
@@ -40,7 +40,7 @@ public class GameStateStack {
 
   public void render(Graphics graphics) {
     try {
-      this.states.peek().render(graphics);
+      this.screens.peek().render(graphics);
     } catch(EmptyStackException e) {
       System.err.println("[GameStateManager]: GameState stack is empty!");
       System.exit(-1);
@@ -49,7 +49,7 @@ public class GameStateStack {
 
   public void keyPressed(int keyCode) {
     try {
-      this.states.peek().keyPressed(keyCode);
+      this.screens.peek().keyPressed(keyCode);
     } catch(EmptyStackException e) {
       System.err.println("[GameStateManager]: GameState stack is empty!");
       System.exit(-1);
@@ -58,7 +58,7 @@ public class GameStateStack {
 
   public void keyReleased(int keyCode) {
     try {
-      this.states.peek().keyReleased(keyCode);
+      this.screens.peek().keyReleased(keyCode);
     } catch(EmptyStackException e) {
       System.err.println("[GameStateManager]: GameState stack is empty!");
       System.exit(-1);

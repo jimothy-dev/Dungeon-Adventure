@@ -5,13 +5,13 @@ import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class WindowManager {
+public class FrameManager {
   private static final int WIDTH = 800; //Should these be private and have getters?
   private static final int HEIGHT = 600;
   private final JFrame frame;
   private JPanel panel;
 
-  public WindowManager() {
+  public FrameManager() {
     frame = new JFrame("Dungeon Adventure");
     frame.setBounds(70, 70, 0, 0);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

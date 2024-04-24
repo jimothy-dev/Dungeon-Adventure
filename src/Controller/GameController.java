@@ -1,8 +1,8 @@
 package Controller;
 
-import Model.GameStateStack;
+import Model.GameScreenStack;
 import View.MainMenu;
-import View.WindowManager;
+import View.FrameManager;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,15 +13,15 @@ import javax.swing.Timer;
 
 public class GameController {
   //This class currently handles both the game loop and window management, which could be separated
-  private static GameStateStack gameStateStack;
-  private static WindowManager windowManager;
+  private static GameScreenStack gameScreenStack;
+  private static FrameManager frameManager;
   private static Timer timer;
   private static MusicManager musicManager;
   private static SoundEffectsManager soundEffectsManager;
 
   public static void init() {
-    gameStateStack  = new GameStateStack();
-    windowManager = new WindowManager();
+    gameScreenStack = new GameScreenStack();
+    frameManager = new FrameManager();
     timer = new Timer(20, new MainGameLoop());
     musicManager = new MusicManager();
     soundEffectsManager = new SoundEffectsManager();
@@ -30,17 +30,17 @@ public class GameController {
   }
 
   public static void start() {
-    gameStateStack.addState(new MainMenu(gameStateStack, musicManager, soundEffectsManager));
-    windowManager.addPanel(new GameScreen());
-    windowManager.addKeyListener(new Keyboard());
-    windowManager.createWindow();
+    gameScreenStack.addState(new MainMenu(gameScreenStack, musicManager, soundEffectsManager));
+    frameManager.addPanel(new GameScreen());
+    frameManager.addKeyListener(new Keyboard());
+    frameManager.createWindow();
     timer.start();
   }
 
   private static class MainGameLoop implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent theEvent){
-      gameStateStack.loop();
+      gameScreenStack.loop();
     }
   }
 
@@ -48,7 +48,7 @@ public class GameController {
     @Override
     protected void paintComponent(Graphics theGraphics) {
       super.paintComponent(theGraphics);
-      gameStateStack.render(theGraphics);
+      gameScreenStack.render(theGraphics);
       repaint();
     }
   }
@@ -60,12 +60,12 @@ public class GameController {
 
     @Override
     public void keyPressed(KeyEvent key) {
-      gameStateStack.keyPressed(key.getKeyCode());
+      gameScreenStack.keyPressed(key.getKeyCode());
     }
 
     @Override
     public void keyReleased(KeyEvent key) {
-      gameStateStack.keyReleased(key.getKeyCode());
+      gameScreenStack.keyReleased(key.getKeyCode());
     }
   }
 }
