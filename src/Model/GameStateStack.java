@@ -1,17 +1,24 @@
 package Model;
 
+import Controller.MusicManager;
+
 import java.awt.Graphics;
 import java.util.EmptyStackException;
 import java.util.Stack;
 
 public class GameStateStack {
   private Stack<GameState> states;
+  private MusicManager musicManager;
+
 
   public GameStateStack() {
     this.states = new Stack<>();
+    this.musicManager = new MusicManager();
   }
   public void addState(GameState state) {
+    state.setSoundManager(musicManager);
     this.states.add(state);
+
   }
 
   public void backToPreviousState() {
