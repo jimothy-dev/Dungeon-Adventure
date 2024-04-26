@@ -88,7 +88,6 @@ public class MainMenu extends GameScreen {
         }
       }
       graphics.drawString(optionText, xStart, yStart + i * optionHeight);
-
     }
   }
 
@@ -110,10 +109,11 @@ public class MainMenu extends GameScreen {
         playSoundEffect(SELECT_EFFECT);
         switch(this.optionMenu[selected]) {
           case START_GAME:
-            MazeGenerator generator = new MazeGenerator();
-            while(!generator.finished()) {
-              generator.generate();
-            }
+            gameScreenStack.addScreen(new CharacterScreen(gameScreenStack));
+//            MazeGenerator generator = new MazeGenerator();
+//            while(!generator.finished()) {
+//              generator.generate();
+//            }
             break;
           case QUIT_GAME:
             System.exit(0);
