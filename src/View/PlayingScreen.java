@@ -40,7 +40,6 @@ public class PlayingScreen extends GameScreen {
 
   }
 
-  @Override
   protected void playBackgroundMusic() {
 
   }

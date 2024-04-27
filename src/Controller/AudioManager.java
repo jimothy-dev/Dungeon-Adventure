@@ -14,7 +14,7 @@ public class AudioManager {
     /**
      * Map of audio clips.
      */
-    protected final Map<String, Clip> audioClips;
+    private final Map<String, Clip> audioClips;
 
     /**
      * The clip that is currently playing.
@@ -68,10 +68,39 @@ public class AudioManager {
      * @param file containing audio.
      * @return a clip made from the audio file.
      */
-    private Clip loadClip(File file) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
-        AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
-        Clip clip = AudioSystem.getClip();
-        clip.open(audioStream);
+    public Clip loadClip(File file) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+        Clip clip = null;
+
+        // Get the audio input stream from the file
+        try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file)) {
+            // Get the original audio format
+            AudioFormat originalFormat = audioInputStream.getFormat();
+
+            // Define the desired audio format
+            AudioFormat desiredFormat = new AudioFormat(
+                    AudioFormat.Encoding.PCM_SIGNED,
+                    originalFormat.getSampleRate(),
+                    16, // 16-bit sample size
+                    originalFormat.getChannels(), // Channels
+                    originalFormat.getChannels() * 2, // Frame size
+                    originalFormat.getSampleRate(), // Frame rate
+                    false // Little-endian
+            );
+
+            // Convert the audio input stream to the desired format if necessary
+            AudioInputStream convertedAudioStream = audioInputStream;
+            if (!originalFormat.matches(desiredFormat)) {
+                convertedAudioStream = AudioSystem.getAudioInputStream(desiredFormat, audioInputStream);
+            }
+
+            // Create a new audio clip
+            clip = AudioSystem.getClip();
+            clip.open(convertedAudioStream);
+        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+            System.err.println("Error loading audio file: " + file.getName());
+            e.printStackTrace();
+//            throw e; // Re-throw the exception to be handled by the caller if needed
+        }
         return clip;
     }
 
@@ -80,12 +109,17 @@ public class AudioManager {
      *
      * @param key used to access clip within the hash map.
      */
-    public void playAudio(String key) {
+    public void playAudio(String key, final boolean theLoop) {
         stopAudio();
-        currentClip = audioClips.get(key.replaceFirst("[.][^.]+$", "").toLowerCase());
+        currentClip = audioClips.get(key.toLowerCase());
         if (currentClip != null) {
-            currentClip.loop(Clip.LOOP_CONTINUOUSLY);
-            currentClip.start();
+            currentClip.setFramePosition(0); // Start from the beginning
+            if (theLoop){
+                currentClip.loop(Clip.LOOP_CONTINUOUSLY);
+            }
+            currentClip.start(); // Start playing
+        } else {
+            System.err.println("Audio clip not found for key: " + key);
         }
     }
 
@@ -95,6 +129,7 @@ public class AudioManager {
     public void stopAudio() {
         if (currentClip != null && currentClip.isRunning()) {
             currentClip.stop();
+            currentClip.setFramePosition(0); // Reset the clip to the beginning
         }
     }
 }

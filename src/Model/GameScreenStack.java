@@ -1,6 +1,5 @@
 package Model;
 
-import Controller.AudioManager;
 
 import java.awt.Graphics;
 import java.util.EmptyStackException;
@@ -8,18 +7,14 @@ import java.util.Stack;
 
 public class GameScreenStack {
   private final Stack<GameScreen> screens;
-  private final AudioManager musicManager;
-  private final AudioManager soundManager;
+
 
 
   public GameScreenStack() {
     this.screens = new Stack<>();
-    this.musicManager = new AudioManager();
-    this.soundManager = new AudioManager();
   }
 
   public void addScreen(GameScreen screen) {
-      screen.setAudioManagers(musicManager, soundManager);
       this.screens.add(screen);
   }
 

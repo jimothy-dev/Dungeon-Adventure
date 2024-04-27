@@ -29,7 +29,6 @@ public class CharacterScreen extends GameScreen {
 
   }
 
-  @Override
   protected void playBackgroundMusic() {
 
   }

@@ -1,7 +1,5 @@
 package View;
 
-import Controller.MazeGenerator;
-import Controller.AudioManager;
 import Model.GameScreen;
 import Model.GameScreenStack;
 import java.awt.Color;
@@ -21,11 +19,11 @@ public class MainMenu extends GameScreen {
   private static final String ENCAPSULATION = "Encapsulation";
   private static final String INHERITANCE = "Inheritance";
   private static final String ABSTRACTION = "Abstraction";
-  private static String MYSTERY = "???????";
   private static final String QUIT_GAME = "Quit Game";
-  private static final String SELECT_EFFECT = "steelsword.wav";
-  private static final String SWITCH_EFFECT = "215029__taira-komori__extracting_knife.wav";
-  private static final String START_MENU_MUSIC = "POL-misty-dungeon-short.wav";
+  private static final String BATTLE_SCREEN = "DEBUG Battle Screen";
+  private static final String SELECT_EFFECT = "steelsword";
+  private static final String SWITCH_EFFECT = "215029__taira-komori__extracting_knife";
+  private static final String START_MENU_MUSIC = "POL-misty-dungeon-short";
   private final String[] optionMenu;
   private int selected;
   private Image selectorImage;
@@ -37,18 +35,18 @@ public class MainMenu extends GameScreen {
   private boolean mysteryUnlock;
 
 
-  public MainMenu(GameScreenStack manager, AudioManager theMM, AudioManager theSEM) {
-      super(manager);
-      this.optionMenu = new String[] {START_GAME, POLYMORPHISM, ENCAPSULATION, INHERITANCE, ABSTRACTION, MYSTERY, QUIT_GAME};
-      this.musicManager = theMM;
-      this.soundManager = theSEM;
-      this.selected = 0;
-      abstractionUnlock = false;
-      inheritanceUnlock = false;
-      encapsulationUnlock = false;
-      polymorphismUnlock = false;
-      mysteryUnlock = false;
-      playBackgroundMusic();
+  public MainMenu(GameScreenStack manager) {
+    super(manager);
+    String MYSTERY = "???????";
+    this.optionMenu = new String[] {START_GAME, POLYMORPHISM, ENCAPSULATION, INHERITANCE, ABSTRACTION,
+            MYSTERY, QUIT_GAME, BATTLE_SCREEN};
+    this.selected = 0;
+    abstractionUnlock = false;
+    inheritanceUnlock = false;
+    encapsulationUnlock = false;
+    polymorphismUnlock = false;
+    mysteryUnlock = false;
+    playBackgroundMusic(START_MENU_MUSIC);
 
     try {
       selectorImage = ImageIO.read(new File("src/Assets/Images/skeleton1.png"));
@@ -103,7 +101,6 @@ public class MainMenu extends GameScreen {
       case KeyEvent.VK_S:
         if(this.selected < this.optionMenu.length-1) this.selected++;
         playSoundEffect(SWITCH_EFFECT);
-
         break;
       case KeyEvent.VK_ENTER:
         playSoundEffect(SELECT_EFFECT);
@@ -118,6 +115,9 @@ public class MainMenu extends GameScreen {
           case QUIT_GAME:
             System.exit(0);
             break;
+          case BATTLE_SCREEN:
+            stopBackgroundMusic();
+            gameScreenStack.addScreen(new BattleScreen(gameScreenStack));
         }
         break;
     }
@@ -127,39 +127,16 @@ public class MainMenu extends GameScreen {
   protected void keyReleased(int keyCode) {
   }
 
-  @Override
-  protected void playBackgroundMusic() {
-    musicManager.playAudio(START_MENU_MUSIC);
-  }
-
-  @Override
-  protected void stopBackgroundMusic() {
-    musicManager.stopAudio();
-  }
-
-  @Override
-  protected void playSoundEffect(String effectName) {
-    soundManager.playAudio(effectName);
-  }
-
   private boolean isOptionEnabled(int index) {
-    switch (index) {
-      case 0:
-      case 6:
-        return true;
-      case 1:
-        return polymorphismUnlock;
-      case 2:
-        return encapsulationUnlock;
-      case 3:
-        return inheritanceUnlock;
-      case 4:
-        return abstractionUnlock;
-      case 5:
-        return mysteryUnlock;
-      default:
-        return false;
-    }
+      return switch (index) {
+          case 0, 6, 7 -> true;
+          case 1 -> polymorphismUnlock;
+          case 2 -> encapsulationUnlock;
+          case 3 -> inheritanceUnlock;
+          case 4 -> abstractionUnlock;
+          case 5 -> mysteryUnlock;
+          default -> false;
+      };
   }
 
   private void unlockMystery(){
