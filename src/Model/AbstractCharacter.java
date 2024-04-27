@@ -1,5 +1,6 @@
 package Model;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class AbstractCharacter {
@@ -9,13 +10,16 @@ public class AbstractCharacter {
     int myDamage;
     int mySpeed;
     double myDodgeRate;
+
+    Bag myBag;
     Random rand = new Random();
-  public  AbstractCharacter(String theName, int theHP, int theDamage, int theSpeed, int theDodgeRate) {
+  public  AbstractCharacter(String theName, int theHP, int theDamage, int theSpeed, double theDodgeRate, GameItem[] theItems) {
       myName = theName;
       myHP = theHP;
       myDamage = theDamage;
       mySpeed = theSpeed;
       myDodgeRate = theDodgeRate;
+      myBag = new Bag(theItems);
   }
 
   public boolean attacked(int theDamage) {
@@ -49,25 +53,53 @@ public class AbstractCharacter {
       return attackLanded;
   }
 
-  public void useHealthPotion() {
-      myHP += 25;
+  public void buffHP(int theHP) {
+      myHP += theHP;
   }
 
-  public void useDamagePotion() {
+  public void buffDamage() {
       myDamage += 10;
   }
 
-  public void useSpeedPotion() {
-      mySpeed += 1;
+  public void buffSpeed(int theSpeed) {
+      mySpeed += theSpeed;
   }
 
-  public void useEvasionPotion() {
-      if (myDodgeRate < 0.6) {
-          myDodgeRate += 0.1;
+  public void buffDodgeRate(double theDodgeRate) {
+      if (myDodgeRate <= 0.6) {
+          myDodgeRate += theDodgeRate;
       }
   }
-  public void heal() {
-      int healthReturned = rand.nextInt(25) + 5;
-      myHP += healthReturned;
+
+  public class Bag {
+      ArrayList<GameItem> myBag;
+
+      public Bag(GameItem[] theItems) {
+          myBag = new ArrayList<GameItem>();
+          for (GameItem item : theItems) {
+              myBag.add(item);
+          }
+      }
+
+      public void addItem(GameItem theItem) {
+          myBag.add(theItem);
+      }
+
+      public void removeItem(GameItem theItem) {
+          myBag.remove(theItem);
+      }
+
+      public GameItem getItem(int theIndex) {
+          return myBag.get(theIndex);
+      }
+
+      public GameItem[] getItems() {
+          GameItem[] items = new GameItem[myBag.size()];
+          int i = 0;
+          for (GameItem item : myBag) {
+              items[i++] = item;
+          }
+          return items;
+      }
   }
 }
