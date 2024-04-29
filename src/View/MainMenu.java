@@ -1,5 +1,6 @@
 package View;
 
+import Controller.MazeGenerator;
 import Controller.MusicManager;
 import Controller.SoundEffectsManager;
 import Model.GameScreen;
@@ -109,7 +110,8 @@ public class MainMenu extends GameScreen {
         playSoundEffect(SELECT_EFFECT);
         switch(this.optionMenu[selected]) {
           case START_GAME:
-            gameScreenStack.addScreen(new CharacterScreen(gameScreenStack));
+            //gameScreenStack.addScreen(new CharacterScreen(gameScreenStack));
+            gameScreenStack.addScreen(new PlayingScreen(gameScreenStack));
 //            MazeGenerator generator = new MazeGenerator();
 //            while(!generator.finished()) {
 //              generator.generate();

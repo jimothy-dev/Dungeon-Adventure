@@ -1,29 +1,32 @@
 package Controller;
 
 import Controller.MathHelper.Direction;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class MazeGenerator {
-  public static final int WORLD_SIZE = 5;
+  public int WORLD_SIZE = 5;
   private int posX;
   private int posY;
 
-  private ArrayList<MathHelper.Direction>[][] roomData;
+  private HashSet<MathHelper.Direction>[][] roomData;
   private boolean generated[][];
 
+
   @SuppressWarnings("unchecked")
-  public MazeGenerator(){
-    roomData = new ArrayList[WORLD_SIZE][WORLD_SIZE];
+  public void reset(int size){
+    WORLD_SIZE = size;
+    roomData = new HashSet[WORLD_SIZE][WORLD_SIZE];
     generated = new boolean[WORLD_SIZE][WORLD_SIZE];
     for(int i=0; i < roomData.length; i++){
       for(int j=0; j < roomData[i].length; j++){
-        this.roomData[i][j] = new ArrayList<>();
+        this.roomData[i][j] = new HashSet<>();
         this.generated[i][j] = false;
       }
     }
     setRandomPosition();
   }
-  public void generate() {
+  public void generate(int size) {
+    WORLD_SIZE = size;
     MathHelper.Direction direction = MathHelper.randomDirection();
     if(this.isValidPosition(posX + direction.dirX, posY + direction.dirY)) {
       if(!this.generated[posX + direction.dirX][posY + direction.dirY]) {
@@ -35,7 +38,7 @@ public class MazeGenerator {
       this.generated[posX][posY] = true;
     }
     else {
-      this.generate();
+      this.generate(WORLD_SIZE);
     }
   }
 
@@ -95,11 +98,14 @@ public class MazeGenerator {
         if (!this.generated[i][j]) return false;
       }
     }
-    for (int i = 0; i < generated.length; i++){
-      for(int j = 0; j < generated[i].length; j++) {
-        System.out.println(roomData[i][j].toString());
-      }
-    }
     return true;
+  }
+
+  public HashSet<Direction> getDataForRoom(int x, int y){
+    return this.roomData[x][y];
+  }
+
+  public int getWORLD_SIZE(){
+    return WORLD_SIZE;
   }
 }
