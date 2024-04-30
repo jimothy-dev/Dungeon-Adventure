@@ -11,23 +11,66 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
+/**
+ * Battle screen created when a monster is encountered. Constructor takes monster and hero.
+ * Random background.
+ *
+ * @author James
+ * @version 1.0
+ */
 public class BattleScreen extends GameScreen {
     /**
      * The number of background images in assets.
      */
     private static final int DEFAULT_NUM_IMAGES = 12;
+
+    /**
+     * Music to play on battle screen.
+     */
     private static final String BATTLE_MUSIC = "08 The Dark Lord's Palace - rock version";
+
+    /**
+     * Battle option 'attack'.
+     */
     private static final String BASE_ATTACK = "Attack";
 //    private static final String SKILLS = "Skills";
+
+    /**
+     * Battle option 'items'.
+     */
     private static final String INVENTORY = "Items";
+
+    /**
+     * Battle option 'run'.
+     */
     private static final String ESCAPE = "Escape";
+
+    /**
+     * Battle options array.
+     */
     private final String[] optionMenu;
     //    private Hero myHero;
 //    private Monster myMonster;
+
+    /**
+     * Currently selected battle option.
+     */
     private int selected;
+
+    /**
+     * Image to be used as background.
+     */
     private Image battleBackgroundImage;
+
+    /**
+     * Represents if the hero is currently able to escape.
+     */
     private final boolean runUnlock;
 
+    /**
+     * Constructor. Sets hero and monster. Sets background image.
+     * @param theStack Stack of gamescreens, this screen is added to the top of the stack.
+     */
     protected BattleScreen(GameScreenStack theStack) {
         super(theStack);
         optionMenu = new String[] {BASE_ATTACK, INVENTORY, ESCAPE};
@@ -76,6 +119,13 @@ public class BattleScreen extends GameScreen {
         placeHealth(20, 12); //will take monster and hero as parameters.
     }
 
+    /**
+     * Draws hero, monster, and platforms for characters.
+     * Places monster top right. hero middle left.
+     * Places platform behind and slightly under hero and monster.
+     *
+     * @param theGraphics Graphics object used to paint on screen.
+     */
     private void placeChars(Graphics theGraphics) {
         Image monsterImage;
         Image heroImage;
@@ -151,10 +201,20 @@ public class BattleScreen extends GameScreen {
         theGraphics.drawImage(scaledHeroImage, heroX, heroY, null);
     }
 
+    /**
+     * Places health bars on screen.
+     * @param theMonster The monster character.
+     * @param theHero The hero character.
+     */
     private void placeHealth(final int theMonster, final int theHero) {
-
+        // ensure these are updated every move.
     }
 
+    /**
+     * Calculates the width of each option in the menu to find the max.
+     * @param graphics Graphics object used for drawing.
+     * @return int representing max width in options.
+     */
     private int getMaxOptionWidth(Graphics graphics) {
         FontMetrics metrics = graphics.getFontMetrics();
         int maxWidth = 0;
@@ -167,21 +227,14 @@ public class BattleScreen extends GameScreen {
         return maxWidth;
     }
 
+    /**
+     * Used to check if an option is enabled. Not clickable if not enabled.
+     * @param index int representing the option in menu.
+     * @return
+     */
     private boolean isOptionEnabled(int index) {
         return switch (index) {
-//            case 0:
-//            case 6:
-//                return true;
-//            case 1:
-//                return ;
-//            case 2:
-//                return ;
-//            case 3:
-//                return ;
-//            case 4:
-//                return ;
-//            case 5:
-//                return ;
+            case 0 -> true; 
             default -> false;
         };
     }

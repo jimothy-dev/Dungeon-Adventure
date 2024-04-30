@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class GameController {
-  //This class currently handles both the game loop and window management, which could be separated
   private static GameScreenStack gameScreenStack;
   private static FrameManager frameManager;
   private static Timer timer;
