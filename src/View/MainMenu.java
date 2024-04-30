@@ -1,6 +1,5 @@
 package View;
 
-import Controller.MazeGenerator;
 import Model.GameScreen;
 import Model.GameScreenStack;
 import java.awt.Color;
@@ -108,6 +107,7 @@ public class MainMenu extends GameScreen {
         playSoundEffect(SELECT_EFFECT);
         switch(this.optionMenu[selected]) {
           case START_GAME:
+            stopBackgroundMusic();
             gameScreenStack.addScreen(new CharacterScreen(gameScreenStack));
 //            MazeGenerator generator = new MazeGenerator();
 //            while(!generator.finished()) {

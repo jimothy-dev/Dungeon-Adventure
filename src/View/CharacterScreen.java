@@ -1,7 +1,5 @@
 package View;
 
-import Controller.MusicManager;
-import Controller.SoundEffectsManager;
 import Model.GameScreen;
 import Model.GameScreenStack;
 import java.awt.Color;
@@ -10,31 +8,31 @@ import java.awt.Graphics;
 import java.awt.Image;
 import javax.imageio.ImageIO;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.File;
 
 public class CharacterScreen extends GameScreen {
 
-  private String chooseText = "Choose your Hero";
-  private String elf = "Elf";
-  private String rogue = "Rogue";
-  private String wizard = "Wizard";
-  private String barbarian = "Barbarian";
+  private final String chooseText = "Choose your Hero";
+  private final String elf = "Elf";
+  private final String rogue = "Rogue";
+  private final String wizard = "Wizard";
+  private final String barbarian = "Barbarian";
   private Image barbarianImage;
   private Image characterSelectionBackgroundImage;
   private Image elfImage;
   private Image rogueImage;
   private Image wizardImage;
-  private static final String SELECT_EFFECT = "steelsword.wav";
-  private static final String SWITCH_EFFECT = "215029__taira-komori__extracting_knife.wav";
+  private static final String SELECT_EFFECT = "steelsword";
+  private static final String SWITCH_EFFECT = "215029__taira-komori__extracting_knife";
+  private static final String START_MENU_MUSIC = "POL-misty-dungeon-short";
+
   int selected;
 
-  protected CharacterScreen(GameScreenStack stack, MusicManager theMM, SoundEffectsManager theSEM) {
-    super(stack);
-    this.musicManager = theMM;
-    this.soundEffectsManager = theSEM;
+  protected CharacterScreen(GameScreenStack theStack) {
+    super(theStack);
     selected = 0;
+    playBackgroundMusic(START_MENU_MUSIC);
 
     try {
       elfImage = ImageIO.read(new File("src/Assets/Images/elf.png"));
@@ -113,20 +111,6 @@ public class CharacterScreen extends GameScreen {
 
   @Override
   protected void keyReleased(int keyCode) {
-
-  }
-
-  protected void playBackgroundMusic() {
-
-  }
-
-  @Override
-  protected void stopBackgroundMusic() {
-
-  }
-
-  @Override
-  protected void playSoundEffect(String theEffectName) {
 
   }
 }
