@@ -1,5 +1,6 @@
 package View;
 
+import Controller.MazeGenerator;
 import Model.GameScreen;
 import Model.GameScreenStack;
 import java.awt.Color;
@@ -19,6 +20,7 @@ public class MainMenu extends GameScreen {
   private static final String ENCAPSULATION = "Encapsulation";
   private static final String INHERITANCE = "Inheritance";
   private static final String ABSTRACTION = "Abstraction";
+  private static String MYSTERY = "???????";
   private static final String QUIT_GAME = "Quit Game";
   private static final String BATTLE_SCREEN = "DEBUG Battle Screen";
   private static final String SELECT_EFFECT = "steelsword";
