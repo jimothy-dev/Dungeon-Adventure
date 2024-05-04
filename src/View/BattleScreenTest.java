@@ -7,7 +7,6 @@ import View.Battle.BattleLogArea;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -83,7 +82,7 @@ class BattleScreenTest {
     }
 
     @Test
-    void testKeyPressedMethod() throws Exception {
+    void testKeyPressedMethod() {
 //        BattleScreen battleScreen = new BattleScreen(gameScreenStack);
 //        Method keyPressedMethod = BattleScreen.class.getDeclaredMethod("keyPressed", int.class);
 //        keyPressedMethod.setAccessible(true);

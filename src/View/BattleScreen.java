@@ -5,10 +5,7 @@ import Model.GameScreenStack;
 import View.Battle.*;
 
 import javax.imageio.ImageIO;
-import java.awt.Color;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -104,7 +101,7 @@ public class BattleScreen extends GameScreen {
      * Draws background image. Sets font.
      * Makes method calls to draw the battle options, character images, and battle log.
      *
-     * @param theGraphics
+     * @param theGraphics Graphics object used to paint BattleScreen components.
      */
     @Override
     protected void render(Graphics theGraphics) {
@@ -130,11 +127,13 @@ public class BattleScreen extends GameScreen {
      * @param theGraphics Graphics object used to draw options.
      */
     private void drawOptions(final Graphics theGraphics) {
+        theGraphics.setFont(theGraphics.getFont().deriveFont(Font.PLAIN, 24));
         FontMetrics metrics = theGraphics.getFontMetrics();
         int optionHeight = metrics.getHeight();
         int totalHeight = optionMenu.length * optionHeight;
-        int xStart = FrameManager.getWidth() - getMaxOptionWidth(theGraphics) - 20; // 20 for padding
-        int yStart = FrameManager.getHeight() - totalHeight - 20; // 20 for padding
+        int xStart = FrameManager.getWidth() * 3 / 4;
+//        int xStart = FrameManager.getWidth() - getMaxOptionWidth(theGraphics)  ; // padding
+        int yStart = FrameManager.getHeight() - totalHeight; // padding
 
         for (int i = 0; i < optionMenu.length; i++) {
             String optionText = optionMenu[i];

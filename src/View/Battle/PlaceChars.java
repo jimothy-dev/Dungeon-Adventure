@@ -1,9 +1,9 @@
 package View.Battle;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 
@@ -42,29 +42,26 @@ public class PlaceChars {
         int desiredHeroHeight = 400;
         int desiredMonsterWidth = 250;
         int desiredMonsterHeight = 250;
+//        if (theMonster.getName() == "skeleton") {
+//            desiredMonsterHeight = 300;
+//        }
         int desiredPlatformWidth = 250;
         int desiredPlatformHeight = 100;
 
         // Calculate scaling factors to maintain aspect ratio for monster image
         int originalMonsterWidth = monsterImage.getWidth(null);
         int originalMonsterHeight = monsterImage.getHeight(null);
-        double scaleMonsterWidth = (double) desiredMonsterWidth / originalMonsterWidth;
-        double scaleMonsterHeight = (double) desiredMonsterHeight / originalMonsterHeight;
-        double scaleMonster = Math.min(scaleMonsterWidth, scaleMonsterHeight);
+        double scaleMonster = scaleImage(desiredMonsterHeight, desiredMonsterWidth, originalMonsterWidth, originalMonsterHeight);
 
         // Calculate scaling factors to maintain aspect ratio for hero image
         int originalHeroWidth = heroImage.getWidth(null);
         int originalHeroHeight = heroImage.getHeight(null);
-        double scaleHeroWidth = (double) desiredHeroWidth / originalHeroWidth;
-        double scaleHeroHeight = (double) desiredHeroHeight / originalHeroHeight;
-        double scaleHero = Math.min(scaleHeroWidth, scaleHeroHeight);
+        double scaleHero = scaleImage(desiredHeroHeight, desiredHeroWidth, originalHeroHeight, originalHeroWidth);
 
         // Calculate scaling factors to maintain aspect ratio for platform image
         int originalPlatformWidth = platformImage.getWidth(null);
         int originalPlatformHeight = platformImage.getHeight(null);
-        double scalePlatformWidth = (double) desiredPlatformWidth / originalPlatformWidth;
-        double scalePlatformHeight = (double) desiredPlatformHeight / originalPlatformHeight;
-        double scalePlatform = Math.min(scalePlatformWidth, scalePlatformHeight);
+        double scalePlatform = scaleImage(desiredPlatformHeight, desiredPlatformWidth, originalPlatformHeight, originalPlatformWidth);
 
         // Scale the images while maintaining aspect ratio
         Image scaledMonsterImage = monsterImage.getScaledInstance(
@@ -102,10 +99,33 @@ public class PlaceChars {
         heroWidth = scaledHeroImage.getWidth(null) + heroX;
     }
 
+    /**
+     * Scales images to be displayed on battlescreen.
+     * @param theDesiredHeight Desired height of image.
+     * @param theDesiredWidth Desired width of image.
+     * @param theActualHeight The original height.
+     * @param theActualWidth The original height.
+     * @return double - How much the image height and width will be scaled by.
+     */
+    private static double scaleImage(final int theDesiredHeight, final int theDesiredWidth,
+                                   final int theActualHeight, final int theActualWidth) {
+        double scaleWidth = (double) theDesiredWidth / theActualWidth;
+        double scaleHeight = (double) theDesiredHeight / theActualHeight;
+        return Math.min(scaleWidth, scaleHeight);
+    }
+
+    /**
+     * What is the width of the hero image?
+     * @return int The width of the hero image.
+     */
     public static int getHeroWidth() {
         return heroWidth;
     }
 
+    /**
+     * What is the x placement of the Monster status bar
+     * @return int - The x placement of the Monster status bar.
+     */
     public static int getMonsterStatusX() {
         return monsterX;
     }

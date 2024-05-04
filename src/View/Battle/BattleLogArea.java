@@ -27,6 +27,6 @@ public class BattleLogArea extends JTextArea {
 
         // Set the size and position of battleLogArea
         this.setBounds(10, FrameManager.getHeight() - FrameManager.getHeight() / 5,
-                FrameManager.getWidth() - 20, FrameManager.getHeight() / 5);
+                FrameManager.getWidth() * 2 / 3, FrameManager.getHeight() / 5);
     }
 }
