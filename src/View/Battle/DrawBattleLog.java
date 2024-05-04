@@ -2,9 +2,16 @@ package View.Battle;
 
 import View.FrameManager;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JTextArea;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 
+/**
+ * Utility class for drawing the JTextArea used for the battle log
+ *
+ * @author James
+ */
 public class DrawBattleLog {
     public static void drawBattleLog(final Graphics theGraphics, final JTextArea theLogArea) {
         // Calculate the height of the battle log box (1/5th of the screen height)

@@ -1,12 +1,14 @@
 package View.Battle;
 
-import javax.swing.*;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * Log output to display battle text on battle screen
+ * Log output to display battle text on battle screen.
+ *
  * @author James
  */
 public class BattleLogOut extends OutputStream {

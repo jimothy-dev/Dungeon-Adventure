@@ -2,10 +2,19 @@ package View.Battle;
 
 import View.FrameManager;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JTextArea;
+import java.awt.Color;
 
+/**
+ * Object to be set as BattleScreen PrintStream to display battle text on screen.
+ *
+ * @author James
+ */
 public class BattleLogArea extends JTextArea {
+
+    /**
+     * Constructor initializes BattleLogArea.
+     */
     public BattleLogArea() {
         super();
         this.setEditable(false); // read-only

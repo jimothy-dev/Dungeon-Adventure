@@ -8,7 +8,10 @@ import View.Battle.DrawBattleLog;
 import View.Battle.PlaceChars;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +27,7 @@ import java.util.Random;
  * @version 1.0
  */
 public class BattleScreen extends GameScreen {
+
     /**
      * The number of background images in assets.
      */
@@ -147,10 +151,10 @@ public class BattleScreen extends GameScreen {
 
     /**
      * Places health bars on screen.
-     * @param theMonster The monster character.
-     * @param theHero The hero character.
      */
-    private void placeHealth(final int theMonster, final int theHero) {
+//         * @param theMonster The monster character.
+//         * @param theHero The hero character.
+    private void placeHealth() {
         // ensure these are updated every move.
     }
 

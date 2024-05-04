@@ -1,10 +1,17 @@
 package View.Battle;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Utility class used to draw hero and monster as well as their platforms on the screen while maintaining aspect ratio.
+ *
+ * @author James
+ */
 public class PlaceChars {
 
     /**
