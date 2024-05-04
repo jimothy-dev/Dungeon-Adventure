@@ -7,13 +7,9 @@ import java.util.Stack;
 
 public class GameScreenStack {
   private final Stack<GameScreen> screens;
-
-
-
   public GameScreenStack() {
     this.screens = new Stack<>();
   }
-
   public void addScreen(GameScreen screen) {
       this.screens.add(screen);
   }

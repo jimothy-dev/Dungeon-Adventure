@@ -99,7 +99,6 @@ public class AudioManager {
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
             System.err.println("Error loading audio file: " + file.getName());
             e.printStackTrace();
-//            throw e; // Re-throw the exception to be handled by the caller if needed
         }
         return clip;
     }

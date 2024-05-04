@@ -1,14 +1,19 @@
 package View;
 
-import Controller.AudioManager;
 import Model.GameScreen;
 import Model.GameScreenStack;
+import View.Battle.BattleLogArea;
+import View.Battle.BattleLogOut;
+import View.Battle.DrawBattleLog;
+import View.Battle.PlaceChars;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -33,7 +38,6 @@ public class BattleScreen extends GameScreen {
      * Battle option 'attack'.
      */
     private static final String BASE_ATTACK = "Attack";
-//    private static final String SKILLS = "Skills";
 
     /**
      * Battle option 'items'.
@@ -49,8 +53,6 @@ public class BattleScreen extends GameScreen {
      * Battle options array.
      */
     private final String[] optionMenu;
-    //    private Hero myHero;
-//    private Monster myMonster;
 
     /**
      * Currently selected battle option.
@@ -63,21 +65,18 @@ public class BattleScreen extends GameScreen {
     private Image battleBackgroundImage;
 
     /**
-     * Represents if the hero is currently able to escape.
+     * Object used to display battle text on screen.
      */
-    private final boolean runUnlock;
+    private final BattleLogArea battleLogArea;
 
     /**
      * Constructor. Sets hero and monster. Sets background image.
      * @param theStack Stack of gamescreens, this screen is added to the top of the stack.
      */
     protected BattleScreen(GameScreenStack theStack) {
-        super(theStack);
+        super(Objects.requireNonNull(theStack));
         optionMenu = new String[] {BASE_ATTACK, INVENTORY, ESCAPE};
         selected = 0;
-//        myHero = theHero;
-//        myMonster = theMonster;
-        runUnlock = false;
         playBackgroundMusic(BATTLE_MUSIC);
         try {
             Random random = new Random();
@@ -87,19 +86,48 @@ public class BattleScreen extends GameScreen {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        // Create the JTextArea for the battle log
+        battleLogArea = new BattleLogArea();
+
+        // Set BattleLogOut as the output stream
+        BattleLogOut battleLogOut = new BattleLogOut(battleLogArea);
+        System.setOut(new PrintStream(battleLogOut));
     }
 
     @Override
     protected void loop() {
     }
 
+    /**
+     * Draws background image. Sets font.
+     * Makes method calls to draw the battle options, character images, and battle log.
+     *
+     * @param theGraphics
+     */
     @Override
     protected void render(Graphics theGraphics) {
+        // Draw the battle background
         theGraphics.drawImage(battleBackgroundImage, 0, 0, FrameManager.getWidth(),
                 FrameManager.getHeight(), null);
         theGraphics.setColor(new Color(30, 30, 70,120));
         theGraphics.fillRect(0, 0, FrameManager.getWidth(), FrameManager.getHeight());
         theGraphics.setFont(getCustomFont());
+
+        drawOptions(theGraphics);
+        PlaceChars.placeChars(theGraphics);
+        DrawBattleLog.drawBattleLog(theGraphics, battleLogArea);
+        BattleLogOut battleLogOut = new BattleLogOut(battleLogArea);
+
+        //sets the output for this screen the battle log output area.
+        System.setOut(new PrintStream(battleLogOut));
+    }
+
+    /**
+     * Displays the battle options on the screen in the bottom right.
+     * @param theGraphics Graphics object used to draw options.
+     */
+    private void drawOptions(final Graphics theGraphics) {
         FontMetrics metrics = theGraphics.getFontMetrics();
         int optionHeight = metrics.getHeight();
         int totalHeight = optionMenu.length * optionHeight;
@@ -111,94 +139,10 @@ public class BattleScreen extends GameScreen {
             if (i == selected) {
                 theGraphics.setColor(Color.magenta);
             } else {
-                theGraphics.setColor(isOptionEnabled(i) ? Color.white : Color.gray);
+                theGraphics.setColor(Color.white);
             }
             theGraphics.drawString(optionText, xStart, yStart + i * optionHeight);
         }
-        placeChars(theGraphics);
-        placeHealth(20, 12); //will take monster and hero as parameters.
-    }
-
-    /**
-     * Draws hero, monster, and platforms for characters.
-     * Places monster top right. hero middle left.
-     * Places platform behind and slightly under hero and monster.
-     *
-     * @param theGraphics Graphics object used to paint on screen.
-     */
-    private void placeChars(Graphics theGraphics) {
-        Image monsterImage;
-        Image heroImage;
-        Image platformImage;
-        try {
-            // Load images
-            monsterImage = ImageIO.read(new File("src/Assets/Images/leech.png"));
-            heroImage = ImageIO.read(new File("src/Assets/Images/elf.png"));
-            platformImage = ImageIO.read(new File("src/Assets/Images/battlePlatform.png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        // Desired dimensions for images
-        int desiredHeroWidth = 250;
-        int desiredHeroHeight = 400;
-        int desiredMonsterWidth = 250;
-        int desiredMonsterHeight = 250;
-        int desiredPlatformWidth = 250;
-        int desiredPlatformHeight = 100;
-
-        // Calculate scaling factors to maintain aspect ratio for monster image
-        int originalMonsterWidth = monsterImage.getWidth(null);
-        int originalMonsterHeight = monsterImage.getHeight(null);
-        double scaleMonsterWidth = (double) desiredMonsterWidth / originalMonsterWidth;
-        double scaleMonsterHeight = (double) desiredMonsterHeight / originalMonsterHeight;
-        double scaleMonster = Math.min(scaleMonsterWidth, scaleMonsterHeight);
-
-        // Calculate scaling factors to maintain aspect ratio for hero image
-        int originalHeroWidth = heroImage.getWidth(null);
-        int originalHeroHeight = heroImage.getHeight(null);
-        double scaleHeroWidth = (double) desiredHeroWidth / originalHeroWidth;
-        double scaleHeroHeight = (double) desiredHeroHeight / originalHeroHeight;
-        double scaleHero = Math.min(scaleHeroWidth, scaleHeroHeight);
-
-        // Calculate scaling factors to maintain aspect ratio for platform image
-        int originalPlatformWidth = platformImage.getWidth(null);
-        int originalPlatformHeight = platformImage.getHeight(null);
-        double scalePlatformWidth = (double) desiredPlatformWidth / originalPlatformWidth;
-        double scalePlatformHeight = (double) desiredPlatformHeight / originalPlatformHeight;
-        double scalePlatform = Math.min(scalePlatformWidth, scalePlatformHeight);
-
-        // Scale the images while maintaining aspect ratio
-        Image scaledMonsterImage = monsterImage.getScaledInstance(
-                (int)(originalMonsterWidth * scaleMonster), (int)(originalMonsterHeight * scaleMonster), Image.SCALE_SMOOTH);
-        Image scaledHeroImage = heroImage.getScaledInstance(
-                (int)(originalHeroWidth * scaleHero), (int)(originalHeroHeight * scaleHero), Image.SCALE_SMOOTH);
-        Image scaledPlatformImage = platformImage.getScaledInstance(
-                (int)(originalPlatformWidth * scalePlatform), (int)(originalPlatformHeight * scalePlatform), Image.SCALE_SMOOTH);
-
-        // Draw images in the graphics object
-        Rectangle clipBounds = theGraphics.getClipBounds();
-        int panelWidth = clipBounds.width;
-        int panelHeight = clipBounds.height;
-
-        // Calculate coordinates for the monster image (top right)
-        int monsterX = panelWidth - (int)(originalMonsterWidth * scaleMonster) - 40;
-        int monsterY = 20;
-
-        // Calculate coordinates for the hero image (middle left)
-        int heroX = 30;
-        int heroY = panelHeight / 2 - (int)(originalHeroHeight * scaleHero) / 2 + 60;
-
-        // Calculate platform coordinates
-        int platformMonsterX = panelWidth - desiredMonsterWidth / 2 - desiredPlatformWidth / 2 ;
-        int platformMonsterY = monsterY + (int)(originalMonsterHeight * scaleMonster) - 40;
-        int platformHeroX = heroX + desiredHeroWidth / 2 - desiredPlatformWidth / 2;
-        int platformHeroY = heroY + (int)(originalHeroHeight * scaleHero) - 60;
-
-        theGraphics.drawImage(scaledPlatformImage, platformMonsterX, platformMonsterY, null);
-        theGraphics.drawImage(scaledPlatformImage, platformHeroX, platformHeroY, null);
-        theGraphics.drawImage(scaledMonsterImage, monsterX, monsterY, null);
-        theGraphics.drawImage(scaledHeroImage, heroX, heroY, null);
     }
 
     /**
@@ -228,17 +172,9 @@ public class BattleScreen extends GameScreen {
     }
 
     /**
-     * Used to check if an option is enabled. Not clickable if not enabled.
-     * @param index int representing the option in menu.
-     * @return
+     * Navigates the battle options.
+     * @param keyCode the key that has been pressed.
      */
-    private boolean isOptionEnabled(int index) {
-        return switch (index) {
-            case 0 -> true; 
-            default -> false;
-        };
-    }
-
     @Override
     protected void keyPressed(int keyCode) {
         switch(keyCode) {
@@ -256,7 +192,10 @@ public class BattleScreen extends GameScreen {
 //                super.soundManager.playAudio();
                 switch(this.optionMenu[selected]) {
                     case BASE_ATTACK:
+System.out.println("DEBUG: Attack");
+                        break;
                     case INVENTORY:
+System.out.println("DEBUG: Inventory");
                         break;
                     case ESCAPE:
                         gameScreenStack.backToPreviousState();
@@ -267,5 +206,6 @@ public class BattleScreen extends GameScreen {
 
     @Override
     protected void keyReleased(int keyCode) {
+
     }
 }
