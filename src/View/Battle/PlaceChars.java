@@ -1,9 +1,9 @@
 package View.Battle;
 
 import javax.imageio.ImageIO;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Rectangle;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
 
@@ -13,6 +13,9 @@ import java.io.IOException;
  * @author James
  */
 public class PlaceChars {
+
+    private static int heroWidth;
+    private static int monsterX;
 
     /**
      * Draws hero, monster, and platforms for characters.
@@ -77,7 +80,7 @@ public class PlaceChars {
         int panelHeight = clipBounds.height;
 
         // Calculate coordinates for the monster image (top right)
-        int monsterX = panelWidth - (int)(originalMonsterWidth * scaleMonster) - 40;
+        monsterX = panelWidth - (int)(originalMonsterWidth * scaleMonster) - 40;
         int monsterY = 20;
 
         // Calculate coordinates for the hero image (middle left)
@@ -94,5 +97,16 @@ public class PlaceChars {
         theGraphics.drawImage(scaledPlatformImage, platformHeroX, platformHeroY, null);
         theGraphics.drawImage(scaledMonsterImage, monsterX, monsterY, null);
         theGraphics.drawImage(scaledHeroImage, heroX, heroY, null);
+
+
+        heroWidth = scaledHeroImage.getWidth(null) + heroX;
+    }
+
+    public static int getHeroWidth() {
+        return heroWidth;
+    }
+
+    public static int getMonsterStatusX() {
+        return monsterX;
     }
 }

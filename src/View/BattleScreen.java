@@ -2,10 +2,7 @@ package View;
 
 import Model.GameScreen;
 import Model.GameScreenStack;
-import View.Battle.BattleLogArea;
-import View.Battle.BattleLogOut;
-import View.Battle.DrawBattleLog;
-import View.Battle.PlaceChars;
+import View.Battle.*;
 
 import javax.imageio.ImageIO;
 import java.awt.Color;
@@ -121,6 +118,7 @@ public class BattleScreen extends GameScreen {
         drawOptions(theGraphics);
         PlaceChars.placeChars(theGraphics);
         DrawBattleLog.drawBattleLog(theGraphics, battleLogArea);
+        DrawCharStatus.drawCharStatus(theGraphics);
         BattleLogOut battleLogOut = new BattleLogOut(battleLogArea);
 
         //sets the output for this screen the battle log output area.

@@ -19,7 +19,7 @@ public class DrawBattleLog {
 
         // Set color and draw the background of the battle log area
         theGraphics.setColor(new Color(50, 50, 50, 180)); // Semi-transparent dark color
-        theGraphics.fillRect(0, FrameManager.getHeight() - boxHeight, FrameManager.getWidth() * 2 / 3, boxHeight);
+        theGraphics.fillRect(0, FrameManager.getHeight() - boxHeight, FrameManager.getWidth() * 2 / 3, boxHeight - 10);
 
         // Draw "Battle Log:" text at the top of the battle log area
         theGraphics.setColor(Color.white);
