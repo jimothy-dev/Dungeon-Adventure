@@ -7,13 +7,29 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * This class is the base for each game screen on an abstract level.
+ *
+ * @author Austin Maggert
+ * @version Spring 2024
+ */
 public abstract class GameScreen {
+
+  /**
+   * gameScreenStack field is the stack that game screens will be put on
+   */
   protected GameScreenStack gameScreenStack;
   private Font retroGamingFont;
   protected AudioManager musicManager;
   protected AudioManager soundManager;
 
 
+  /**
+   * GameScreen constructor creates an instance of game screen and puts it
+   * on the stack.
+   *
+   * @param manager is the game screen stack this game screen will be on
+   */
   protected GameScreen(GameScreenStack manager) {
     this.gameScreenStack = manager;
     try {
@@ -44,6 +60,13 @@ public abstract class GameScreen {
     }
   }
 
+  /**
+   * setSoundManager method sets the sound manager for implementing game screens
+   *
+   * @param musicManager is the music manager to be used
+   */
+  public void setSoundManager(MusicManager musicManager) {
+    this.musicManager = musicManager;
   protected void stopBackgroundMusic() {
     if (musicManager != null) {
       musicManager.stopAudio();
@@ -56,8 +79,28 @@ public abstract class GameScreen {
     }
   }
 
+  /**
+   * loop method for any looping behaviors in implementing game screens
+   */
   protected abstract void loop();
+
+  /**
+   * render method is for diplaying graphics in implementing game screens
+   * @param graphics
+   */
   protected abstract void render(Graphics graphics);
+
+  /**
+   * keyPressed allows key pressed listening events to be managed
+   *
+   * @param keyCode is the code for the key pressed
+   */
   protected abstract void keyPressed(int keyCode);
+
+  /**
+   * keyReleased allows key released listening events to be managed
+   *
+   * @param keyCode is the code for the key released
+   */
   protected abstract void keyReleased(int keyCode);
 }
