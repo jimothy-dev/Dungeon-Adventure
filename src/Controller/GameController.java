@@ -38,21 +38,21 @@ public class GameController {
    * init method initializes the fields
    */
   public static void init() {
-    gameScreenStack = new GameScreenStack();
-    frameManager = new FrameManager();
-    timer = new Timer(20, new MainGameLoop());
+    myGameScreenStack = new GameScreenStack();
+    myFrameManager = new FrameManager();
+    myTimer = new Timer(20, new MainGameLoop());
   }
 
   /**
    * start method starts the game, and initializes game play state
    */
   public static void start() {
-    gameScreenStack.addScreen(new MainMenu(gameScreenStack));
-    frameManager.addPanel(new GameScreen());
-    frameManager.addKeyListener(new Keyboard());
-    frameManager.createWindow();
-    timer.start();
-    myGameScreenStack.addState(new MainMenu(myGameScreenStack, myMusicManager, soundEffectsManager));
+    myGameScreenStack.addScreen(new MainMenu(myGameScreenStack));
+    myFrameManager.addPanel(new GameScreen());
+    myFrameManager.addKeyListener(new Keyboard());
+    myFrameManager.createWindow();
+    myTimer.start();
+    myGameScreenStack.addScreen(new MainMenu(myGameScreenStack));
     myFrameManager.addPanel(new GameScreen());
     myFrameManager.addKeyListener(new Keyboard());
     myFrameManager.createWindow();

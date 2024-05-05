@@ -1,4 +1,4 @@
-package Model;
+package Model.Items;
 
 /**
  * This class represents a game item on an abstract level.

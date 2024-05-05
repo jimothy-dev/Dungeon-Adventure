@@ -1,4 +1,6 @@
-package Model;
+package Model.Character;
+
+import Model.Items.*;
 
 import java.util.Random;
 

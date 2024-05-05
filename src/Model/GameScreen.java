@@ -60,22 +60,15 @@ public abstract class GameScreen {
     }
   }
 
-  /**
-   * setSoundManager method sets the sound manager for implementing game screens
-   *
-   * @param musicManager is the music manager to be used
-   */
-  public void setSoundManager(MusicManager musicManager) {
-    this.musicManager = musicManager;
-  protected void stopBackgroundMusic() {
-    if (musicManager != null) {
-      musicManager.stopAudio();
-    }
-  }
-
   protected void playSoundEffect(String effectKey) {
     if (soundManager != null) {
       soundManager.playAudio(effectKey, false);
+    }
+  }
+
+  protected void stopBackgroundMusic() {
+    if (musicManager != null) {
+      musicManager.stopAudio();
     }
   }
 

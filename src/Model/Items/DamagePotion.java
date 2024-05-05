@@ -1,4 +1,4 @@
-package Model;
+package Model.Items;
 
 /**
  * This class represents a damage potion game item.

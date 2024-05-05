@@ -132,7 +132,6 @@ public class BattleScreen extends GameScreen {
         int optionHeight = metrics.getHeight();
         int totalHeight = optionMenu.length * optionHeight;
         int xStart = FrameManager.getWidth() * 3 / 4;
-//        int xStart = FrameManager.getWidth() - getMaxOptionWidth(theGraphics)  ; // padding
         int yStart = FrameManager.getHeight() - totalHeight; // padding
 
         for (int i = 0; i < optionMenu.length; i++) {
@@ -146,14 +145,6 @@ public class BattleScreen extends GameScreen {
         }
     }
 
-    /**
-     * Places health bars on screen.
-     */
-//         * @param theMonster The monster character.
-//         * @param theHero The hero character.
-    private void placeHealth() {
-        // ensure these are updated every move.
-    }
 
     /**
      * Calculates the width of each option in the menu to find the max.

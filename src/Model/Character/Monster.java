@@ -1,4 +1,6 @@
-package Model;
+package Model.Character;
+
+import Model.Items.GameItem;
 
 /**
  * This class represents all monsters at an abstract level.

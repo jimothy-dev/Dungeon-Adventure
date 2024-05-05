@@ -1,4 +1,6 @@
-package Model;
+package Model.Character;
+
+import Model.Items.GameItem;
 
 import java.util.ArrayList;
 import java.util.Random;

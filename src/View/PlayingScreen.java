@@ -59,15 +59,6 @@ public class PlayingScreen extends GameScreen {
 
   }
 
-  protected void playBackgroundMusic() {
-
-  }
-
-  @Override
-  protected void stopBackgroundMusic() {
-
-  }
-
   @Override
   protected void playSoundEffect(String theEffectName) {
 

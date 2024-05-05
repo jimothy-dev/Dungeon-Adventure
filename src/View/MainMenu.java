@@ -64,7 +64,7 @@ public class MainMenu extends GameScreen {
   @Override
   protected void render(Graphics graphics) {
     graphics.drawImage(menuBackgroundImage, 0, 0, FrameManager.getWidth(),
-        FrameManager.getHeight(), null);
+                       FrameManager.getHeight(), null);
     graphics.setColor(new Color(30, 30, 70,120));
     graphics.fillRect(0, 0, FrameManager.getWidth(), FrameManager.getHeight());
     graphics.setFont(new Font("Arial", Font.PLAIN, 25));
@@ -78,7 +78,7 @@ public class MainMenu extends GameScreen {
       if (i == selected) {
         graphics.setColor(Color.magenta);
         graphics.drawImage(selectorImage, xStart - selectorImage.getWidth(null) - 5,
-            yStart + i * optionHeight - optionHeight / 2, null);
+                           yStart + i * optionHeight - optionHeight / 2, null);
       } else {
         if (isOptionEnabled(i)) {
           graphics.setColor(Color.white);
@@ -130,15 +130,15 @@ public class MainMenu extends GameScreen {
   }
 
   private boolean isOptionEnabled(int index) {
-      return switch (index) {
-          case 0, 6, 7 -> true;
-          case 1 -> polymorphismUnlock;
-          case 2 -> encapsulationUnlock;
-          case 3 -> inheritanceUnlock;
-          case 4 -> abstractionUnlock;
-          case 5 -> mysteryUnlock;
-          default -> false;
-      };
+    return switch (index) {
+      case 0, 6, 7 -> true;
+      case 1 -> polymorphismUnlock;
+      case 2 -> encapsulationUnlock;
+      case 3 -> inheritanceUnlock;
+      case 4 -> abstractionUnlock;
+      case 5 -> mysteryUnlock;
+      default -> false;
+    };
   }
 
   private void unlockMystery(){

@@ -1,4 +1,4 @@
-package Model;
+package Model.Character;
 
 /**
  * This class is the interface for characters that can heal.
