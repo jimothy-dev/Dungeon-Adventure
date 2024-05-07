@@ -14,8 +14,8 @@ import java.util.Objects;
  */
 public abstract class GameScreen {
 
-  private AudioManager mySoundManager;
-  private AudioManager myMusicManager;
+  private final AudioManager mySoundManager;
+  private final AudioManager myMusicManager;
   /**
    * gameScreenStack field is the stack that game screens will be put on
    */

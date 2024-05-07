@@ -151,6 +151,30 @@ public class AbstractCharacter {
   }
 
     /**
+     * Image representing this character.
+     * @return Character image string.
+     */
+    public String getImage() {
+        return myImage;
+    }
+
+    /**
+     * Gets the name of the character.
+     * @return Character name string
+     */
+    public String getName() {
+        return myName;
+    }
+
+    /**
+     * Gets the character's max HP.
+     * @return Character maxHP int.
+     */
+    public int getMaxHP() {
+        return myMaxHP;
+    }
+
+    /**
      * attack method receives another character and attempts an attack on that
      * character. It will return truee if the attack lands, and false otherwise.
      *
@@ -226,10 +250,6 @@ public class AbstractCharacter {
      */
     public boolean checkIfDead() {
         return myDeathStatus;
-    }
-
-    public String getImage() {
-        return myImage;
     }
 
     /**

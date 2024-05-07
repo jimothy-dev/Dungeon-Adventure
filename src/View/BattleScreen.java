@@ -90,7 +90,7 @@ public class BattleScreen extends GameScreen {
         super(Objects.requireNonNull(theStack));
         optionMenu = new String[] {BASE_ATTACK, INVENTORY, ESCAPE};
         selected = 0;
-//        playBackgroundMusic(BATTLE_MUSIC);
+        playBackgroundMusic(BATTLE_MUSIC);
         try {
             Random random = new Random();
             battleBackgroundImage = ImageIO.read(
@@ -108,7 +108,7 @@ public class BattleScreen extends GameScreen {
         System.setOut(new PrintStream(battleLogOut));
 
         myMonster = new Skeleton();
-        myHero = new Wizard();
+        myHero = new Barbarian();
         myBattleAssets = new BattleAssets();
         myBattleAssets.initialize(myHero, myMonster);
     }
@@ -200,6 +200,7 @@ public class BattleScreen extends GameScreen {
                 switch(this.optionMenu[selected]) {
                     case BASE_ATTACK:
 System.out.println("DEBUG: Attack");
+                        myMonster.attacked(myHero.getDamage());
                         break;
                     case INVENTORY:
 System.out.println("DEBUG: Inventory");

@@ -39,35 +39,41 @@ public class DrawCharStatus {
                                        final Hero theHero, final Monster theMonster) {
         theGraphics.setColor(Color.white);
         theGraphics.setFont(theGraphics.getFont().deriveFont(Font.PLAIN, 14));
-        theGraphics.drawString("Elf", theHeroStat.x + 10, theHeroStat.y + 20);
-        theGraphics.drawString("Skeleton", theMonStat.x + 10, theMonStat.y + 20);
+        theGraphics.drawString(theHero.getName(), theHeroStat.x + 10, theHeroStat.y + 20);
+        theGraphics.drawString(theMonster.getName(), theMonStat.x + 10, theMonStat.y + 20);
     }
 
-    private static void addHealth(final Graphics theGraphics, final Rectangle heroStatus, final Rectangle monStatus,
+    private static void addHealth(final Graphics theGraphics, final Rectangle theHeroStatus, final Rectangle theMonStatus,
                                   final Hero theHero, final Monster theMonster) {
-        // to be received from hero object.
-        int heroHealth = 100; //will this be percent?
-        int heroHealthBarPercent = (heroStatus.width - 40) / 100;
-        heroHealthBarPercent = heroHealthBarPercent * heroHealth;
+        // Calculate the full length of the health bars (same for hero and monster).
+        int fullBarWidth = theHeroStatus.width - 110;
 
-        // to be received from monster object.
-        int monsterHealth = 100;
-        int monHealthBarPercent = (monStatus.width - 40) / 100;
-        monHealthBarPercent = monHealthBarPercent * monsterHealth;
+        // Calculate the percentage of health remaining for hero and monster.
+        double heroHealthPercent = (double) theHero.getHP() / theHero.getMaxHP();
+        double monsterHealthPercent = (double) theMonster.getHP() / theMonster.getMaxHP();
 
+        // Calculate the length of the red rectangles based on the health percentages.
+        int heroHealthBarWidth = (int) (fullBarWidth * heroHealthPercent);
+        int monsterHealthBarWidth = (int) (fullBarWidth * monsterHealthPercent);
+
+        // Draw black rectangles representing the background of the health bars.
         theGraphics.setColor(Color.black);
-        theGraphics.fillRect(heroStatus.x + 17, heroStatus.y + 33, heroHealthBarPercent, 20);
-        theGraphics.fillRect(monStatus.x + 17, monStatus.y + 33, monHealthBarPercent, 20);
+        theGraphics.fillRect(theHeroStatus.x + 17, theHeroStatus.y + 34, fullBarWidth + 6, 18);
+        theGraphics.fillRect(theMonStatus.x + 17, theMonStatus.y + 34, fullBarWidth + 6, 18);
 
+        // Draw red rectangles representing the current health as a percentage of max HP.
         theGraphics.setColor(Color.red);
-        theGraphics.fillRect(heroStatus.x + 20, heroStatus.y + 35, heroHealthBarPercent - 6, 16);
-        theGraphics.fillRect(monStatus.x + 20, monStatus.y + 35, monHealthBarPercent - 6, 16);
+        theGraphics.fillRect(theHeroStatus.x + 20, theHeroStatus.y + 35, heroHealthBarWidth, 16);
+        theGraphics.fillRect(theMonStatus.x + 20, theMonStatus.y + 35, monsterHealthBarWidth, 16);
 
-        theGraphics.drawString(heroHealth + "/" + 100,
-                heroStatus.x + 20 + heroHealthBarPercent,
-                heroStatus.y + 50);
-        theGraphics.drawString(monsterHealth + "/" + 100,
-                monStatus.x + 20 + heroHealthBarPercent,
-                monStatus.y + 50);
+        // Display the HP values as text
+        theGraphics.setColor(Color.white);
+        theGraphics.drawString(theHero.getHP() + "/" + theHero.getMaxHP(),
+                theHeroStatus.x + 20 + fullBarWidth + 5,
+                theHeroStatus.y + 50);
+        theGraphics.drawString(theMonster.getHP() + "/" + theMonster.getMaxHP(),
+                theMonStatus.x + 20 + fullBarWidth + 5,
+                theMonStatus.y + 50);
     }
+
 }
