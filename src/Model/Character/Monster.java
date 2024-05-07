@@ -10,6 +10,8 @@ import Model.Items.GameItem;
  */
 public class Monster extends AbstractCharacter {
 
+    private final GameItem[] myItems;
+
     /**
      * Monster constructor provides a level of polymorphism
      * to interact with monster characters under one type
@@ -23,5 +25,10 @@ public class Monster extends AbstractCharacter {
      */
     public Monster(String theName, int theHP, int theDamage, int theSpeed, double theDodgeRate, GameItem[] theItems) {
         super(theName, theHP, theDamage, theSpeed, theDodgeRate, theItems);
+        myItems = theItems;
+    }
+
+    public GameItem[] getReward() {
+        return myItems;
     }
 }

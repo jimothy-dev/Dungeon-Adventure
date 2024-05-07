@@ -30,4 +30,9 @@ public abstract class GameItem {
     public String getItemName() {
         return myName;
     }
+
+    @Override
+    public String toString() {
+        return myName;
+    }
 }

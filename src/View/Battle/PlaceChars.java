@@ -44,12 +44,14 @@ public class PlaceChars {
         int heroY = panelHeight / 2 - scaledHeroImage.getHeight(null) / 2 + 60;
 
         // Calculate platform coordinates
-        int platformMonsterX = panelWidth - scaledMonsterImage.getWidth(null) / 2 - scaledPlatformImage.getWidth(null) / 2;
+        int platformMonsterX = panelWidth - scaledMonsterImage.getWidth(null) / 2
+                               - scaledPlatformImage.getWidth(null) / 2;
         int platformMonsterY = monsterY + scaledMonsterImage.getHeight(null) - 40;
-        int platformHeroX = heroX + scaledHeroImage.getWidth(null) / 2 - scaledPlatformImage.getWidth(null) / 2;
+        int platformHeroX = heroX + scaledHeroImage.getWidth(null) / 2
+                            - scaledPlatformImage.getWidth(null) / 2;
         int platformHeroY = heroY + scaledHeroImage.getHeight(null) - 60;
 
-        theGraphics.drawImage(scaledPlatformImage, platformMonsterX, platformMonsterY, null);
+        theGraphics.drawImage(scaledPlatformImage, platformMonsterX - 30, platformMonsterY, null);
         theGraphics.drawImage(scaledPlatformImage, platformHeroX, platformHeroY, null);
         theGraphics.drawImage(scaledMonsterImage, monsterX, monsterY, null);
         theGraphics.drawImage(scaledHeroImage, heroX, heroY, null);

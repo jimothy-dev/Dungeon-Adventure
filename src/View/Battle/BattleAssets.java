@@ -20,16 +20,19 @@ public class BattleAssets {
      * @param theHero The hero character object.
      * @param theMonster The monster character object.
      */
-    public void initialize(Hero theHero, Monster theMonster) {
-        int panelWidth = FrameManager.getWidth();
-        int panelHeight = FrameManager.getHeight();
+    public void initialize(final Hero theHero, final Monster theMonster, final Boolean theVictory) {
 
         Image monsterImage;
         Image heroImage;
         Image platformImage;
+
         // Load images
         try {
-            monsterImage = ImageIO.read(new File(theMonster.getImage()));
+            if (theVictory) {
+                monsterImage = ImageIO.read(new File("src/Assets/Images/chest.png"));
+            } else {
+                monsterImage = ImageIO.read(new File(theMonster.getImage()));
+            }
             heroImage = ImageIO.read(new File(theHero.getImage()));
             platformImage = ImageIO.read(new File("src/Assets/Images/battlePlatform.png"));
         } catch (IOException e) {

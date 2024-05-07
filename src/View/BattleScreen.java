@@ -20,6 +20,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 
@@ -80,6 +81,7 @@ public class BattleScreen extends GameScreen {
     private final Monster myMonster;
     private final Hero myHero;
     private final BattleAssets myBattleAssets;
+    private final BattleAssets myWinningAssets;
 
 
     /**
@@ -108,9 +110,11 @@ public class BattleScreen extends GameScreen {
         System.setOut(new PrintStream(battleLogOut));
 
         myMonster = new Skeleton();
-        myHero = new Barbarian();
+        myHero = new Wizard();
         myBattleAssets = new BattleAssets();
-        myBattleAssets.initialize(myHero, myMonster);
+        myWinningAssets = new BattleAssets();
+        myBattleAssets.initialize(myHero, myMonster, false);
+        myWinningAssets.initialize(myHero, myMonster, true);
     }
 
     @Override
@@ -133,7 +137,11 @@ public class BattleScreen extends GameScreen {
         theGraphics.setFont(getCustomFont());
 
         drawOptions(theGraphics);
-        PlaceChars.placeChars(theGraphics, myBattleAssets);
+        if (myMonster.checkIfDead()) {
+            PlaceChars.placeChars(theGraphics, myWinningAssets);
+        } else {
+            PlaceChars.placeChars(theGraphics, myBattleAssets);
+        }
         DrawBattleLog.drawBattleLog(theGraphics, battleLogArea);
         DrawCharStatus.drawCharStatus(theGraphics, myHero, myMonster);
     }
@@ -201,6 +209,9 @@ public class BattleScreen extends GameScreen {
                     case BASE_ATTACK:
 System.out.println("DEBUG: Attack");
                         myMonster.attacked(myHero.getDamage());
+                        if (myMonster.checkIfDead()) {
+                            System.out.println("Victory! You received " + Arrays.toString(myMonster.getReward()));
+                        }
                         break;
                     case INVENTORY:
 System.out.println("DEBUG: Inventory");
