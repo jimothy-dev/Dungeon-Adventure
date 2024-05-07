@@ -44,8 +44,8 @@ class GameScreenTest {
 
         // Use reflection to access protected members
         Field gameScreenStackField = GameScreen.class.getDeclaredField("gameScreenStack");
-        Field musicManagerField = GameScreen.class.getDeclaredField("musicManager");
-        Field soundManagerField = GameScreen.class.getDeclaredField("soundManager");
+        Field musicManagerField = GameScreen.class.getDeclaredField("myMusicManager");
+        Field soundManagerField = GameScreen.class.getDeclaredField("mySoundManager");
 
         // Make the fields accessible
         gameScreenStackField.setAccessible(true);

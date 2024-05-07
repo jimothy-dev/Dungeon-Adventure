@@ -16,7 +16,7 @@ public class AbstractCharacter {
     /**
      * myName field is the name of the character.
      */
-    private String myName;
+    private final String myName;
 
     /**
      * myHP field is the character's health points.
@@ -54,6 +54,14 @@ public class AbstractCharacter {
     private boolean myDeathStatus;
 
     /**
+     * image name form this character.
+     */
+    private final String myImage;
+
+    private final String DEFAULT_IMAGE_PATH = "src/Assets/Images/";
+
+
+    /**
      * rand is a Random generator for class usage.
      */
     private final Random RANDOM = new Random();
@@ -78,6 +86,7 @@ public class AbstractCharacter {
       myDodgeRate = theDodgeRate;
       myBag = new Bag(theItems);
       myDeathStatus = false;
+      myImage = DEFAULT_IMAGE_PATH + theName + "Battle.png";
   }
 
     /**
@@ -217,6 +226,10 @@ public class AbstractCharacter {
      */
     public boolean checkIfDead() {
         return myDeathStatus;
+    }
+
+    public String getImage() {
+        return myImage;
     }
 
     /**

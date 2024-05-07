@@ -35,7 +35,7 @@ public class CharacterScreen extends GameScreen {
     playBackgroundMusic(START_MENU_MUSIC);
 
     try {
-      elfImage = ImageIO.read(new File("src/Assets/Images/elf.png"));
+      elfImage = ImageIO.read(new File("src/Assets/Images/ElfBattle.png"));
       wizardImage = ImageIO.read(new File("src/Assets/Images/wizard.png"));
       rogueImage = ImageIO.read(new File("src/Assets/Images/rogue.png"));
       barbarianImage = ImageIO.read(new File("src/Assets/Images/barbarian.png"));

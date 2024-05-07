@@ -1,6 +1,9 @@
 package Model;
 
+import Controller.AudioManager;
+
 import java.awt.Graphics;
+import java.io.File;
 import java.util.EmptyStackException;
 import java.util.Stack;
 
@@ -17,21 +20,29 @@ public class GameScreenStack {
  */
   private final Stack<GameScreen> screens;
 
-/**
+  private final AudioManager myMusicManager;
+  private final AudioManager mySoundManager;
+
+
+  /**
  * GameScreenStack constructor makes a game screen stack and
  * initializes the fields
  */
   public GameScreenStack() {
     this.screens = new Stack<>();
+    myMusicManager = new AudioManager();
+    mySoundManager = new AudioManager();
+    myMusicManager.loadAllAudio(new File("src/Assets/BackgroundMusic"));
+    mySoundManager.loadAllAudio(new File("src/Assets/SoundEffects"));
   }
 
 /**
  * addState method puts a game screen on the stack
  *
- * @param state is the game screen to be added
+ * @param theScreen is the game screen to be added
  */
-  public void addScreen(GameScreen screen) {
-      this.screens.add(screen);
+  public void addScreen(GameScreen theScreen) {
+      this.screens.add(theScreen);
   }
 
   /**
@@ -102,5 +113,13 @@ public class GameScreenStack {
       System.err.println("[GameStateManager]: GameState stack is empty!");
       System.exit(-1);
     }
+  }
+
+  public AudioManager getMusicManager() {
+    return myMusicManager;
+  }
+
+  public AudioManager getSoundManger() {
+    return mySoundManager;
   }
 }

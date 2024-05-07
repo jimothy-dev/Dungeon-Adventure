@@ -1,11 +1,24 @@
 package View;
 
+import Model.Character.Elf;
+import Model.Character.Hero;
+import Model.Character.Monster;
+import Model.Character.Skeleton;
 import Model.GameScreen;
 import Model.GameScreenStack;
-import View.Battle.*;
+import View.Battle.BattleAssets;
+import View.Battle.BattleLogArea;
+import View.Battle.BattleLogOut;
+import View.Battle.DrawBattleLog;
+import View.Battle.DrawCharStatus;
+import View.Battle.PlaceChars;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -67,6 +80,11 @@ public class BattleScreen extends GameScreen {
      */
     private final BattleLogArea battleLogArea;
 
+    private final Monster myMonster;
+    private final Hero myHero;
+    private final BattleAssets myBattleAssets;
+
+
     /**
      * Constructor. Sets hero and monster. Sets background image.
      * @param theStack Stack of gamescreens, this screen is added to the top of the stack.
@@ -91,6 +109,11 @@ public class BattleScreen extends GameScreen {
         // Set BattleLogOut as the output stream
         BattleLogOut battleLogOut = new BattleLogOut(battleLogArea);
         System.setOut(new PrintStream(battleLogOut));
+
+        myMonster = new Skeleton();
+        myHero = new Elf();
+        myBattleAssets = new BattleAssets();
+        myBattleAssets.initialize(myHero, myMonster);
     }
 
     @Override
@@ -113,13 +136,9 @@ public class BattleScreen extends GameScreen {
         theGraphics.setFont(getCustomFont());
 
         drawOptions(theGraphics);
-        PlaceChars.placeChars(theGraphics);
+        PlaceChars.placeChars(theGraphics, myBattleAssets);
         DrawBattleLog.drawBattleLog(theGraphics, battleLogArea);
         DrawCharStatus.drawCharStatus(theGraphics);
-        BattleLogOut battleLogOut = new BattleLogOut(battleLogArea);
-
-        //sets the output for this screen the battle log output area.
-        System.setOut(new PrintStream(battleLogOut));
     }
 
     /**
@@ -173,7 +192,6 @@ public class BattleScreen extends GameScreen {
             case KeyEvent.VK_UP:
             case KeyEvent.VK_W:
                 if(this.selected > 0) this.selected--;
-//                super.soundManager.playAudio();
                 break;
             case KeyEvent.VK_DOWN:
             case KeyEvent.VK_S:

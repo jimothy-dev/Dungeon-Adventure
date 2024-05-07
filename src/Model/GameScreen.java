@@ -3,7 +3,6 @@ package Model;
 import Controller.AudioManager;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -15,13 +14,14 @@ import java.util.Objects;
  */
 public abstract class GameScreen {
 
+  private AudioManager mySoundManager;
+  private AudioManager myMusicManager;
   /**
    * gameScreenStack field is the stack that game screens will be put on
    */
   protected GameScreenStack gameScreenStack;
   private Font retroGamingFont;
-  protected AudioManager musicManager;
-  protected AudioManager soundManager;
+
 
 
   /**
@@ -42,10 +42,9 @@ public abstract class GameScreen {
     } catch (FontFormatException | IOException e) {
       e.printStackTrace();
     }
-    musicManager = new AudioManager();
-    soundManager = new AudioManager();
-    musicManager.loadAllAudio(new File("src/Assets/BackgroundMusic"));
-    soundManager.loadAllAudio(new File("src/Assets/SoundEffects"));
+    myMusicManager = gameScreenStack.getMusicManager();
+    mySoundManager = gameScreenStack.getSoundManger();
+
   }
 
   public Font getCustomFont() {
@@ -53,23 +52,21 @@ public abstract class GameScreen {
   }
 
   protected void playBackgroundMusic(String musicKey) {
-    if (musicManager != null) {
-      musicManager.playAudio(musicKey, true);
+    if (myMusicManager != null) {
+      myMusicManager.playAudio(musicKey, true);
     } else {
       System.out.println("DEBUG: null music file");
     }
   }
 
   protected void playSoundEffect(String effectKey) {
-    if (soundManager != null) {
-      soundManager.playAudio(effectKey, false);
+    if (mySoundManager != null) {
+      mySoundManager.playAudio(effectKey, false);
     }
   }
 
   protected void stopBackgroundMusic() {
-    if (musicManager != null) {
-      musicManager.stopAudio();
-    }
+    mySoundManager.stopAudio();
   }
 
   /**
