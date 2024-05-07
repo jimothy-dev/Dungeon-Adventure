@@ -88,8 +88,11 @@ public class BattleScreen extends GameScreen {
      * Constructor. Sets hero and monster. Sets background image.
      * @param theStack Stack of gamescreens, this screen is added to the top of the stack.
      */
-    protected BattleScreen(GameScreenStack theStack) {
+    protected BattleScreen(final GameScreenStack theStack, final Hero theHero, final Monster theMonster) {
         super(Objects.requireNonNull(theStack));
+        myHero = Objects.requireNonNull(theHero);
+        myMonster = Objects.requireNonNull(theMonster);
+
         optionMenu = new String[] {BASE_ATTACK, INVENTORY, ESCAPE};
         selected = 0;
         playBackgroundMusic(BATTLE_MUSIC);
@@ -109,8 +112,6 @@ public class BattleScreen extends GameScreen {
         BattleLogOut battleLogOut = new BattleLogOut(battleLogArea);
         System.setOut(new PrintStream(battleLogOut));
 
-        myMonster = new Skeleton();
-        myHero = new Wizard();
         myBattleAssets = new BattleAssets();
         myWinningAssets = new BattleAssets();
         myBattleAssets.initialize(myHero, myMonster, false);

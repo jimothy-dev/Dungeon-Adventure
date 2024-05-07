@@ -1,5 +1,8 @@
 package View;
 
+import Model.Character.Hero;
+import Model.Character.Skeleton;
+import Model.Character.Wizard;
 import Model.GameScreen;
 import Model.GameScreenStack;
 import java.awt.Color;
@@ -119,7 +122,7 @@ public class MainMenu extends GameScreen {
             break;
           case BATTLE_SCREEN:
             stopBackgroundMusic();
-            gameScreenStack.addScreen(new BattleScreen(gameScreenStack));
+            gameScreenStack.addScreen(new BattleScreen(gameScreenStack, new Wizard(), new Skeleton()));
         }
         break;
     }

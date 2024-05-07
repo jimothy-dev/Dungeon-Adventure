@@ -2,6 +2,9 @@ package View;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import Model.Character.Barbarian;
+import Model.Character.Skeleton;
+import Model.Character.Wizard;
 import Model.GameScreenStack;
 import View.Battle.BattleLogArea;
 import org.junit.jupiter.api.Test;
@@ -19,7 +22,7 @@ class BattleScreenTest {
     @Test
     void testBattleScreenConstructor() throws Exception {
         // Create an instance of BattleScreen
-        BattleScreen battleScreen = new BattleScreen(gameScreenStack);
+        BattleScreen battleScreen = new BattleScreen(gameScreenStack, new Wizard(), new Skeleton());
 
         // Use reflection to access protected fields
         Field optionMenuField = BattleScreen.class.getDeclaredField("optionMenu");
@@ -63,7 +66,7 @@ class BattleScreenTest {
     @Test
     void testRenderMethod() throws Exception {
         GameScreenStack gameScreenStack = new GameScreenStack();
-        BattleScreen battleScreen = new BattleScreen(gameScreenStack);
+        BattleScreen battleScreen = new BattleScreen(gameScreenStack, new Barbarian(), new Skeleton());
 
         // Use reflection to access the protected render method
         Method renderMethod = BattleScreen.class.getDeclaredMethod("render", Graphics.class);
