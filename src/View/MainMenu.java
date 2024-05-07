@@ -48,7 +48,7 @@ public class MainMenu extends GameScreen {
     encapsulationUnlock = false;
     polymorphismUnlock = false;
     mysteryUnlock = false;
-    playBackgroundMusic(START_MENU_MUSIC);
+//    playBackgroundMusic(START_MENU_MUSIC);
     try {
       selectorImage = ImageIO.read(new File("src/Assets/Images/skeleton1.png"));
       menuBackgroundImage = ImageIO.read(new File("src/Assets/Images/title.png"));

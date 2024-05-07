@@ -1,9 +1,6 @@
 package View;
 
-import Model.Character.Elf;
-import Model.Character.Hero;
-import Model.Character.Monster;
-import Model.Character.Skeleton;
+import Model.Character.*;
 import Model.GameScreen;
 import Model.GameScreenStack;
 import View.Battle.BattleAssets;
@@ -93,7 +90,7 @@ public class BattleScreen extends GameScreen {
         super(Objects.requireNonNull(theStack));
         optionMenu = new String[] {BASE_ATTACK, INVENTORY, ESCAPE};
         selected = 0;
-        playBackgroundMusic(BATTLE_MUSIC);
+//        playBackgroundMusic(BATTLE_MUSIC);
         try {
             Random random = new Random();
             battleBackgroundImage = ImageIO.read(
@@ -111,7 +108,7 @@ public class BattleScreen extends GameScreen {
         System.setOut(new PrintStream(battleLogOut));
 
         myMonster = new Skeleton();
-        myHero = new Elf();
+        myHero = new Wizard();
         myBattleAssets = new BattleAssets();
         myBattleAssets.initialize(myHero, myMonster);
     }
@@ -138,7 +135,7 @@ public class BattleScreen extends GameScreen {
         drawOptions(theGraphics);
         PlaceChars.placeChars(theGraphics, myBattleAssets);
         DrawBattleLog.drawBattleLog(theGraphics, battleLogArea);
-        DrawCharStatus.drawCharStatus(theGraphics);
+        DrawCharStatus.drawCharStatus(theGraphics, myHero, myMonster);
     }
 
     /**

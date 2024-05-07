@@ -1,5 +1,7 @@
 package View.Battle;
 
+import Model.Character.Hero;
+import Model.Character.Monster;
 import View.FrameManager;
 
 import java.awt.*;
@@ -10,11 +12,8 @@ public class DrawCharStatus {
 
 
 
-    public static void drawCharStatus(final Graphics theGraphics) {
-        drawStatusAreas(theGraphics);
-    }
+    public static void drawCharStatus(final Graphics theGraphics, final Hero theHero, final Monster theMonster) {
 
-    private static void drawStatusAreas(final Graphics theGraphics) {
         // Calculate the height of the character status areas.
         int boxHeight = FrameManager.getHeight() / 8;
 
@@ -31,19 +30,21 @@ public class DrawCharStatus {
                 FrameManager.getWidth() * 2 / 5, boxHeight);
         theGraphics.fillRect(heroStatus.x, heroStatus.y, heroStatus.width, heroStatus.height);
 
-        writeCharNames(theGraphics, heroStatus, monStatus);
-        addHealth(theGraphics, heroStatus, monStatus);
+        writeCharNames(theGraphics, heroStatus, monStatus, theHero, theMonster);
+        addHealth(theGraphics, heroStatus, monStatus, theHero, theMonster);
     }
 
     private static void writeCharNames(final Graphics theGraphics,
-                                       final Rectangle theHeroStat, final Rectangle theMonStat) {
+                                       final Rectangle theHeroStat, final Rectangle theMonStat,
+                                       final Hero theHero, final Monster theMonster) {
         theGraphics.setColor(Color.white);
         theGraphics.setFont(theGraphics.getFont().deriveFont(Font.PLAIN, 14));
         theGraphics.drawString("Elf", theHeroStat.x + 10, theHeroStat.y + 20);
-        theGraphics.drawString("Leech", theMonStat.x + 10, theMonStat.y + 20);
+        theGraphics.drawString("Skeleton", theMonStat.x + 10, theMonStat.y + 20);
     }
 
-    private static void addHealth(Graphics theGraphics, Rectangle heroStatus, Rectangle monStatus) {
+    private static void addHealth(final Graphics theGraphics, final Rectangle heroStatus, final Rectangle monStatus,
+                                  final Hero theHero, final Monster theMonster) {
         // to be received from hero object.
         int heroHealth = 100; //will this be percent?
         int heroHealthBarPercent = (heroStatus.width - 40) / 100;
