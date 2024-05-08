@@ -101,11 +101,15 @@ public class MazeGenerator {
     return true;
   }
 
-  public HashSet<Direction> getDataForRoom(int x, int y){
+  public HashSet<Direction> getDirForRoom(int x, int y){
     return this.roomData[x][y];
   }
 
   public int getWORLD_SIZE(){
     return WORLD_SIZE;
+  }
+
+  public HashSet<MathHelper.Direction>[][] getRoomData(){
+    return this.roomData;
   }
 }
