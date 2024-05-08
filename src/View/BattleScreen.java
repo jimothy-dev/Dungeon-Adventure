@@ -3,12 +3,7 @@ package View;
 import Model.Character.*;
 import Model.GameScreen;
 import Model.GameScreenStack;
-import View.Battle.BattleAssets;
-import View.Battle.BattleLogArea;
-import View.Battle.BattleLogOut;
-import View.Battle.DrawBattleLog;
-import View.Battle.DrawCharStatus;
-import View.Battle.PlaceChars;
+import View.Battle.*;
 
 import javax.imageio.ImageIO;
 import java.awt.Color;
@@ -82,6 +77,8 @@ public class BattleScreen extends GameScreen {
     private final Hero myHero;
     private final BattleAssets myBattleAssets;
     private final BattleAssets myWinningAssets;
+    private final BattleTurnManager myTurnManager;
+    private final BattleManager myBattleManager;
 
 
     /**
@@ -116,10 +113,15 @@ public class BattleScreen extends GameScreen {
         myWinningAssets = new BattleAssets();
         myBattleAssets.initialize(myHero, myMonster, false);
         myWinningAssets.initialize(myHero, myMonster, true);
+        myTurnManager = new BattleTurnManager(myHero, myMonster);
+        myBattleManager = new BattleManager(myHero, myMonster, myTurnManager);
     }
 
     @Override
     protected void loop() {
+        if (!myTurnManager.getTurn()) {
+            myBattleManager.monsterAttack();
+        }
     }
 
     /**
@@ -136,8 +138,9 @@ public class BattleScreen extends GameScreen {
         theGraphics.setColor(new Color(30, 30, 70,120));
         theGraphics.fillRect(0, 0, FrameManager.getWidth(), FrameManager.getHeight());
         theGraphics.setFont(getCustomFont());
-
-        drawOptions(theGraphics);
+        if (myTurnManager.getTurn()) {
+            drawOptions(theGraphics);
+        }
         if (myMonster.checkIfDead()) {
             PlaceChars.placeChars(theGraphics, myWinningAssets);
         } else {
@@ -170,23 +173,23 @@ public class BattleScreen extends GameScreen {
         }
     }
 
-
-    /**
-     * Calculates the width of each option in the menu to find the max.
-     * @param graphics Graphics object used for drawing.
-     * @return int representing max width in options.
-     */
-    private int getMaxOptionWidth(Graphics graphics) {
-        FontMetrics metrics = graphics.getFontMetrics();
-        int maxWidth = 0;
-        for (String option : optionMenu) {
-            int width = metrics.stringWidth(option);
-            if (width > maxWidth) {
-                maxWidth = width;
-            }
-        }
-        return maxWidth;
-    }
+//
+//    /**
+//     * Calculates the width of each option in the menu to find the max.
+//     * @param graphics Graphics object used for drawing.
+//     * @return int representing max width in options.
+//     */
+//    private int getMaxOptionWidth(Graphics graphics) {
+//        FontMetrics metrics = graphics.getFontMetrics();
+//        int maxWidth = 0;
+//        for (String option : optionMenu) {
+//            int width = metrics.stringWidth(option);
+//            if (width > maxWidth) {
+//                maxWidth = width;
+//            }
+//        }
+//        return maxWidth;
+//    }
 
     /**
      * Navigates the battle options.
@@ -208,8 +211,10 @@ public class BattleScreen extends GameScreen {
 //                super.soundManager.playAudio();
                 switch(this.optionMenu[selected]) {
                     case BASE_ATTACK:
-System.out.println("DEBUG: Attack");
-                        myMonster.attacked(myHero.getDamage());
+//System.out.println("DEBUG: Attack");
+                        if (myTurnManager.getTurn()) {
+                            myBattleManager.heroAttack();
+                        }
                         if (myMonster.checkIfDead()) {
                             System.out.println("Victory! You received " + Arrays.toString(myMonster.getReward()));
                         }
