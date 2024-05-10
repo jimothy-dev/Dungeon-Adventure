@@ -20,7 +20,7 @@ public class Elf extends Hero implements Healable {
      * Elf constructor creates an elf hero character
      */
    public Elf() {
-       super("Elf", 100,25, 3, 0.1, new GameItem[] {});
+       super("Elf", 100,25, 1, 0.1, new GameItem[] {});
    }
 
     /**

@@ -1,8 +1,6 @@
 package View;
 
-import Model.Character.Hero;
-import Model.Character.Skeleton;
-import Model.Character.Wizard;
+import Model.Character.*;
 import Model.GameScreen;
 import Model.GameScreenStack;
 import java.awt.Color;
@@ -51,7 +49,7 @@ public class MainMenu extends GameScreen {
     encapsulationUnlock = false;
     polymorphismUnlock = false;
     mysteryUnlock = false;
-    playBackgroundMusic(START_MENU_MUSIC);
+//    playBackgroundMusic(START_MENU_MUSIC);
     try {
       selectorImage = ImageIO.read(new File("src/Assets/Images/skeleton1.png"));
       menuBackgroundImage = ImageIO.read(new File("src/Assets/Images/title.png"));
@@ -122,7 +120,7 @@ public class MainMenu extends GameScreen {
             break;
           case BATTLE_SCREEN:
             stopBackgroundMusic();
-            gameScreenStack.addScreen(new BattleScreen(gameScreenStack, new Wizard(), new Skeleton()));
+            gameScreenStack.addScreen(new BattleScreen(gameScreenStack, new Elf(), new Skeleton()));
         }
         break;
     }

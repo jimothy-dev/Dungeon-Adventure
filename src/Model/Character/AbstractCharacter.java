@@ -3,6 +3,7 @@ package Model.Character;
 import Model.Items.GameItem;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 /**
@@ -58,7 +59,7 @@ public class AbstractCharacter {
      */
     private final String myImage;
 
-    private final String DEFAULT_IMAGE_PATH = "src/Assets/Images/";
+    private static final String DEFAULT_IMAGE_PATH = "src/Assets/Images/";
 
 
     /**
@@ -71,7 +72,7 @@ public class AbstractCharacter {
      *
      * @param theName is the character's name
      * @param theHP is the character's health points
-     * @param theDamage is the character's damaeage points
+     * @param theDamage is the character's damage points
      * @param theSpeed is the character's speed points
      * @param theDodgeRate is the character's dodge rate
      * @param theItems are the items to be included in initial bag (can be empty)
@@ -176,14 +177,13 @@ public class AbstractCharacter {
 
     /**
      * attack method receives another character and attempts an attack on that
-     * character. It will return truee if the attack lands, and false otherwise.
+     * character. It will return true if the attack lands, and false otherwise.
      *
      * @param theOtherCharacter is the character to be attacked
      * @return returns true when attack lands and false otherwise
      */
   public boolean attack(AbstractCharacter theOtherCharacter) {
-      boolean attackLanded = theOtherCharacter.attacked(myDamage);
-      return attackLanded;
+      return theOtherCharacter.attacked(myDamage);
   }
 
     /**
@@ -252,13 +252,30 @@ public class AbstractCharacter {
         return myDeathStatus;
     }
 
+//    /**
+//     * addItemToBag receives an item and puts it into the character's bag
+//     *
+//     * @param theItem is the item to be stored in the bag
+//     */
+//  public void addItemToBag(GameItem theItem) {
+//      myBag.addItem(theItem);
+//  }
+
+  // this method is only to be kept if a monster is capable of carrying more than one item. getReward() in monster
+    // class returns an array of GameItem. Should it instead return only the 1st item in their inventory/the only item?
     /**
-     * addItemToBag receives an item and puts it into the character's bag
-     *
-     * @param theItem is the item to be stored in the bag
+     * Method used when defeating monster to add the monster's rewards to the player's bag.
+     * @param theRewards Array of items in monster's inventory.
      */
-  public void addItemToBag(GameItem theItem) {
-      myBag.addItem(theItem);
+  public void addRewardsToBag(GameItem[] theRewards) {
+      StringBuilder sb = new StringBuilder();
+      sb.append(theRewards[0]);
+      for (int i = 1; i < theRewards.length; i++){
+          sb.append(", ");
+          sb.append(theRewards[i]);
+          myBag.addItem(theRewards[i]);
+      }
+      System.out.println(sb);
   }
 
     /**
@@ -341,9 +358,7 @@ public class AbstractCharacter {
          */
       public Bag(GameItem[] theItems) {
           myBag = new ArrayList<GameItem>();
-          for (GameItem item : theItems) {
-              myBag.add(item);
-          }
+          Collections.addAll(myBag, theItems);
       }
 
         /**
@@ -395,11 +410,12 @@ public class AbstractCharacter {
          * @param theItem is the item to be checked if it is in the bag
          * @return returns true if the item is in the bag, false otherwise
          */
-      public Boolean hasItem(GameItem theItem) {
-          Boolean result = false;
+      public boolean hasItem(GameItem theItem) {
+          boolean result = false;
           for (GameItem item : myBag) {
               if (item.getItemName().equals(theItem.getItemName())) {
                   result = true;
+                  break;
               }
           }
           return result;

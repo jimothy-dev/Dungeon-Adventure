@@ -19,7 +19,7 @@ public class AudioManager {
     /**
      * The clip that is currently playing.
      */
-    protected Clip currentClip;
+    private Clip currentClip;
 
     /**
      * Constructor for AudioManager.

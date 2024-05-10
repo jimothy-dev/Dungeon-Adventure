@@ -56,6 +56,9 @@ public class BattleTurnManager {
      */
     public void calculateTurn() {
         myCurrentTurn = myHeroTime >= myMonsterTime;
+        if (myMonster.checkIfDead()) {
+            myCurrentTurn = true;
+        }
         if (myCurrentTurn) {
             myMonsterTime += myMonster.getSpeed();
         } else {
