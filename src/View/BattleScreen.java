@@ -15,6 +15,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 
@@ -159,7 +160,6 @@ public class BattleScreen extends GameScreen {
         theGraphics.drawImage(battleBackgroundImage, 0, 0, FrameManager.getWidth(),
                 FrameManager.getHeight(), null);
         theGraphics.setColor(new Color(30, 30, 70,120));
-        theGraphics.fillRect(0, 0, FrameManager.getWidth(), FrameManager.getHeight());
         theGraphics.setFont(getCustomFont());
         if (myTurnManager.getTurn()) {
             drawOptions(theGraphics);
@@ -222,7 +222,7 @@ public class BattleScreen extends GameScreen {
         switch(keyCode) {
             case KeyEvent.VK_UP:
             case KeyEvent.VK_W:
-                if(this.selected > 0) this.selected--;
+                if(selected > 0) selected--;
                 break;
             case KeyEvent.VK_DOWN:
             case KeyEvent.VK_S:
@@ -251,7 +251,7 @@ public class BattleScreen extends GameScreen {
                         }
                         break;
                     case INVENTORY:
-System.out.println("DEBUG: Inventory");
+                        gameScreenStack.addScreen(new InventoryScreen(gameScreenStack, myHero));
                         break;
                     case ESCAPE:
                         if (currentMenu == optionMenu) {
@@ -265,6 +265,8 @@ System.out.println("DEBUG: Inventory");
                         break;
                     case END_GAME:
                         if (currentMenu == gameOverMenu) {
+                            gameScreenStack.clearStack();
+                            gameScreenStack.addScreen(new MainMenu(gameScreenStack));
                             // Handle end game scenario
                         }
                         break;

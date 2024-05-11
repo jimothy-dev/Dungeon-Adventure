@@ -35,15 +35,17 @@ public class MainMenu extends GameScreen {
   private boolean encapsulationUnlock;
   private boolean polymorphismUnlock;
   private boolean mysteryUnlock;
+  private final Hero myHero;
 
 
 
   public MainMenu(GameScreenStack manager) {
     super(manager);
+    myHero = new Elf();
     String MYSTERY = "???????";
-    this.optionMenu = new String[] {START_GAME, POLYMORPHISM, ENCAPSULATION, INHERITANCE, ABSTRACTION,
+    optionMenu = new String[] {START_GAME, POLYMORPHISM, ENCAPSULATION, INHERITANCE, ABSTRACTION,
             MYSTERY, QUIT_GAME, BATTLE_SCREEN};
-    this.selected = 0;
+    selected = 0;
     abstractionUnlock = false;
     inheritanceUnlock = false;
     encapsulationUnlock = false;
@@ -96,17 +98,17 @@ public class MainMenu extends GameScreen {
     switch(keyCode) {
       case KeyEvent.VK_UP:
       case KeyEvent.VK_W:
-        if(this.selected > 0) this.selected--;
+        if(selected > 0) selected--;
         playSoundEffect(SWITCH_EFFECT);
         break;
       case KeyEvent.VK_DOWN:
       case KeyEvent.VK_S:
-        if(this.selected < this.optionMenu.length-1) this.selected++;
+        if(selected < optionMenu.length - 1) selected++;
         playSoundEffect(SWITCH_EFFECT);
         break;
       case KeyEvent.VK_ENTER:
         playSoundEffect(SELECT_EFFECT);
-        switch(this.optionMenu[selected]) {
+        switch(optionMenu[selected]) {
           case START_GAME:
             stopBackgroundMusic();
             gameScreenStack.addScreen(new CharacterScreen(gameScreenStack));
@@ -120,7 +122,7 @@ public class MainMenu extends GameScreen {
             break;
           case BATTLE_SCREEN:
             stopBackgroundMusic();
-            gameScreenStack.addScreen(new BattleScreen(gameScreenStack, new Elf(), new Skeleton()));
+            gameScreenStack.addScreen(new BattleScreen(gameScreenStack, myHero, new Skeleton()));
         }
         break;
     }
