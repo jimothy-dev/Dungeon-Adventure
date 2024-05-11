@@ -36,8 +36,8 @@ public class InventoryScreen extends GameScreen {
         itemOptions = tempList.toArray(new String[tempList.size()]);
         try {
             inventoryBackgroundImage = ImageIO.read(new File(
-//                    "src/Assets/Images/inventoryBackground.png"));
-                    "src/Assets/Images/dungeon background 4.png"));
+                    "src/Assets/Images/inventoryBackground.jpeg"));
+//                    "src/Assets/Images/dungeon background 4.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -53,10 +53,18 @@ public class InventoryScreen extends GameScreen {
         theGraphics.drawImage(inventoryBackgroundImage, 0, 0,
                 FrameManager.getWidth(),
                 FrameManager.getHeight(), null);
+
+        // Set color and draw the background of the battle log area
+        theGraphics.setColor(new Color(50, 50, 50, 180)); // Semi-transparent dark color
+        int boxWidth = 300; // Adjust the width of the box as needed
+        int boxX = (FrameManager.getWidth() - boxWidth) / 2; // Center horizontally
+        int boxY = (FrameManager.getHeight() - itemOptions.length * 30) / 2; // Center vertically
+        theGraphics.fillRect(boxX, boxY, boxWidth, itemOptions.length * 30);
+
         theGraphics.setFont(getCustomFont());
         theGraphics.setFont(theGraphics.getFont().deriveFont(Font.PLAIN, 24));
         theGraphics.setColor(Color.WHITE);
-        int startY = FrameManager.getHeight() / 2;
+        int startY = boxY + 24; // Adjusted startY to align text with the box
         if (itemOptions.length == 0) {
             itemOptions = new String[] {EMPTY};
         }
@@ -78,6 +86,8 @@ public class InventoryScreen extends GameScreen {
             theGraphics.setColor(Color.WHITE);
         }
     }
+
+
 
     @Override
     protected void keyPressed(int keyCode) {

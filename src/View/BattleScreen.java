@@ -113,7 +113,7 @@ public class BattleScreen extends GameScreen {
         gameOverMenu = new String[] {END_GAME};
         returnMenu = new String[] {RETURN};
         selected = 0;
-//        playBackgroundMusic(BATTLE_MUSIC);
+        playBackgroundMusic(BATTLE_MUSIC);
         try {
             Random random = new Random();
             battleBackgroundImage = ImageIO.read(
