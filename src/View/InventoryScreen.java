@@ -53,6 +53,8 @@ public class InventoryScreen extends GameScreen {
         theGraphics.drawImage(inventoryBackgroundImage, 0, 0,
                 FrameManager.getWidth(),
                 FrameManager.getHeight(), null);
+        theGraphics.setFont(getCustomFont());
+        theGraphics.setFont(theGraphics.getFont().deriveFont(Font.PLAIN, 24));
         theGraphics.setColor(Color.WHITE);
         int startY = FrameManager.getHeight() / 2;
         if (itemOptions.length == 0) {
