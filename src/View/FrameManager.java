@@ -6,8 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class FrameManager {
-  private static final int WIDTH = 800; //Should these be private and have getters?
-  private static final int HEIGHT = 600;
+  public static final int WIDTH = 800; //Should these be private and have getters?
+  public static final int HEIGHT = 600;
   private final JFrame frame;
   private JPanel panel;
 
