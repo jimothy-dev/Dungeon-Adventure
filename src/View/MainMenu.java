@@ -1,6 +1,8 @@
 package View;
 
 import Model.Character.*;
+import Model.Character.Saving.HeroSave;
+import Model.Character.Saving.SavedGameLister;
 import Model.GameScreen;
 import Model.GameScreenStack;
 import java.awt.Color;
@@ -9,8 +11,10 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.Image;
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.io.IOException;
 import java.io.File;
+import java.util.List;
 
 //Music: “Misty Dungeon”, from PlayOnLoop.com
 //Licensed under Creative Commons by Attribution 4.0
@@ -22,6 +26,9 @@ public class MainMenu extends GameScreen {
   private static final String ABSTRACTION = "Abstraction";
   private static String MYSTERY = "???????";
   private static final String QUIT_GAME = "Quit Game";
+  private static final String SAVE_GAME = "Save Game";
+  private static final String LOAD_GAME = "Load Game";
+
   private static final String BATTLE_SCREEN = "DEBUG Battle Screen";
   private static final String SELECT_EFFECT = "steelsword";
   private static final String SWITCH_EFFECT = "215029__taira-komori__extracting_knife";
@@ -35,7 +42,9 @@ public class MainMenu extends GameScreen {
   private boolean encapsulationUnlock;
   private boolean polymorphismUnlock;
   private boolean mysteryUnlock;
-  private final Hero myHero;
+  private Hero myHero;
+  private final File saveLocation;
+
 
 
 
@@ -44,7 +53,7 @@ public class MainMenu extends GameScreen {
     myHero = new Elf();
     String MYSTERY = "???????";
     optionMenu = new String[] {START_GAME, POLYMORPHISM, ENCAPSULATION, INHERITANCE, ABSTRACTION,
-            MYSTERY, QUIT_GAME, BATTLE_SCREEN};
+            MYSTERY, QUIT_GAME, BATTLE_SCREEN, SAVE_GAME, LOAD_GAME};
     selected = 0;
     abstractionUnlock = false;
     inheritanceUnlock = false;
@@ -52,6 +61,7 @@ public class MainMenu extends GameScreen {
     polymorphismUnlock = false;
     mysteryUnlock = false;
     playBackgroundMusic(START_MENU_MUSIC);
+    saveLocation = new File("src/SavedGame");
     try {
       selectorImage = ImageIO.read(new File("src/Assets/Images/skeleton1.png"));
       menuBackgroundImage = ImageIO.read(new File("src/Assets/Images/title.png"));
@@ -65,31 +75,32 @@ public class MainMenu extends GameScreen {
   }
 
   @Override
-  protected void render(Graphics graphics) {
-    graphics.drawImage(menuBackgroundImage, 0, 0, FrameManager.getWidth(),
+  protected void render(Graphics theGraphics) {
+    theGraphics.drawImage(menuBackgroundImage, 0, 0, FrameManager.getWidth(),
                        FrameManager.getHeight(), null);
-    graphics.setColor(new Color(30, 30, 70,120));
-    graphics.fillRect(0, 0, FrameManager.getWidth(), FrameManager.getHeight());
-    graphics.setFont(new Font("Arial", Font.PLAIN, 25));
-    int optionHeight = graphics.getFontMetrics().getHeight();
+    theGraphics.setColor(new Color(30, 30, 70,120));
+    theGraphics.fillRect(0, 0, FrameManager.getWidth(), FrameManager.getHeight());
+    theGraphics.setFont(getCustomFont());
+    theGraphics.setFont(theGraphics.getFont().deriveFont(Font.PLAIN, 25));
+    int optionHeight = theGraphics.getFontMetrics().getHeight();
     int totalHeight = optionMenu.length * optionHeight;
     int yStart = (FrameManager.getHeight() - totalHeight) / 2;
     for (int i = 0; i < optionMenu.length; i++) {
       String optionText = optionMenu[i];
-      int textWidth = graphics.getFontMetrics().stringWidth(optionText);
+      int textWidth = theGraphics.getFontMetrics().stringWidth(optionText);
       int xStart = (FrameManager.getWidth() - textWidth) / 2;
       if (i == selected) {
-        graphics.setColor(Color.magenta);
-        graphics.drawImage(selectorImage, xStart - selectorImage.getWidth(null) - 5,
+        theGraphics.setColor(Color.magenta);
+        theGraphics.drawImage(selectorImage, xStart - selectorImage.getWidth(null) - 5,
                            yStart + i * optionHeight - optionHeight / 2, null);
       } else {
         if (isOptionEnabled(i)) {
-          graphics.setColor(Color.white);
+          theGraphics.setColor(Color.white);
         } else {
-          graphics.setColor(Color.gray); // Grey out disabled options
+          theGraphics.setColor(Color.gray); // Grey out disabled options
         }
       }
-      graphics.drawString(optionText, xStart, yStart + i * optionHeight);
+      theGraphics.drawString(optionText, xStart, yStart + i * optionHeight);
     }
   }
 
@@ -112,17 +123,48 @@ public class MainMenu extends GameScreen {
           case START_GAME:
             stopBackgroundMusic();
             gameScreenStack.addScreen(new CharacterScreen(gameScreenStack));
-//            MazeGenerator generator = new MazeGenerator();
-//            while(!generator.finished()) {
-//              generator.generate();
-//            }
             break;
+
           case QUIT_GAME:
             System.exit(0);
             break;
+
           case BATTLE_SCREEN:
             stopBackgroundMusic();
             gameScreenStack.addScreen(new BattleScreen(gameScreenStack, myHero, new Skeleton()));
+            break;
+
+          case SAVE_GAME:
+            String saveFileName = JOptionPane.showInputDialog("Enter a name for your save file:");
+            if (saveFileName != null && !saveFileName.trim().isEmpty()) {
+              HeroSave.saveHero(myHero, saveFileName + ".sav");
+              JOptionPane.showMessageDialog(null, "Game saved successfully.");
+            } else {
+              JOptionPane.showMessageDialog(null, "Invalid file name. Game not saved.");
+            }
+            break;
+
+          case LOAD_GAME:
+            List<String> savedGames = SavedGameLister.listSavedGames();
+            if (savedGames.isEmpty()) {
+              JOptionPane.showMessageDialog(null, "No saved games found.");
+            } else {
+              String selectedGame = (String) JOptionPane.showInputDialog(
+                      null,
+                      "Select a saved game to load:",
+                      "Load Game",
+                      JOptionPane.PLAIN_MESSAGE,
+                      null,
+                      savedGames.toArray(),
+                      savedGames.get(0)
+              );
+              if (selectedGame != null) {
+                myHero = HeroSave.loadHero(selectedGame);
+                JOptionPane.showMessageDialog(null, "Game loaded successfully.");
+                // Transition to the game screen or perform any additional setup
+              }
+            }
+            break;
         }
         break;
     }
@@ -134,7 +176,7 @@ public class MainMenu extends GameScreen {
 
   private boolean isOptionEnabled(int index) {
     return switch (index) {
-      case 0, 6, 7 -> true;
+      case 0, 6, 7, 8, 9 -> true;
       case 1 -> polymorphismUnlock;
       case 2 -> encapsulationUnlock;
       case 3 -> inheritanceUnlock;

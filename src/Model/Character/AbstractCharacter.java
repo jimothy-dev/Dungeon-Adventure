@@ -2,6 +2,7 @@ package Model.Character;
 
 import Model.Items.GameItem;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
@@ -13,7 +14,7 @@ import java.util.Random;
  * @author Austin Maggert
  * @version Spring 2024
  */
-public class AbstractCharacter {
+public class AbstractCharacter implements Serializable {
 
     /**
      * myName field is the name of the character.
@@ -174,6 +175,14 @@ public class AbstractCharacter {
      */
     public int getMaxHP() {
         return myMaxHP;
+    }
+
+    /**
+     * Getter for dodge rate
+     * @return Character dodge rate.
+     */
+    public double getDodgeRate() {
+        return myDodgeRate;
     }
 
     /**
@@ -357,7 +366,7 @@ public class AbstractCharacter {
      * @author Austin Maggert
      * @version 03may2024
      */
-  public static class Bag {
+  public static class Bag implements Serializable {
 
         /**
          * myBag field stores the game items in an arraylist

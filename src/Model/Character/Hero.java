@@ -2,6 +2,12 @@ package Model.Character;
 
 import Model.Items.GameItem;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 /**
  * This class represents all heros at an abstract level.
  *
@@ -24,4 +30,34 @@ public class Hero extends AbstractCharacter {
     public Hero(String theName, int theHP, int theDamage, int theSpeed, double theDodgeRate, GameItem[] theItems) {
         super(theName, theHP, theDamage, theSpeed, theDodgeRate, theItems);
     }
+
+    /**
+     * Save the hero to a file.
+     *
+     * @param theFilePath is the path to the file where the hero should be saved.
+     */
+    public void saveHero(String theFilePath) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(theFilePath))) {
+            oos.writeObject(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Load a hero from a file.
+     *
+     * @param theFilePath is the path to the file from which the hero should be loaded.
+     * @return the loaded hero.
+     */
+    public static Hero loadHero(String theFilePath) {
+        Hero hero = null;
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(theFilePath))) {
+            hero = (Hero) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return hero;
+    }
 }
+
