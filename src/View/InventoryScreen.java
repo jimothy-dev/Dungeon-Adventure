@@ -37,7 +37,6 @@ public class InventoryScreen extends GameScreen {
         try {
             inventoryBackgroundImage = ImageIO.read(new File(
                     "src/Assets/Images/inventoryBackground.jpeg"));
-//                    "src/Assets/Images/dungeon background 4.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -107,6 +106,8 @@ public class InventoryScreen extends GameScreen {
                 if (!itemOptions[selected].equals(EMPTY)) {
                     gameScreenStack.backToPreviousState();
                     System.out.println(myHero.useItem(gameItems[selected]));
+                } else {
+                    gameScreenStack.backToPreviousState();
                 }
         }
     }

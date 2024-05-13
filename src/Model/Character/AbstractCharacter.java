@@ -295,10 +295,11 @@ public class AbstractCharacter {
           switch (theItem.getItemName()) {
               case "Health Potion":
                   int hp = RANDOM.nextInt(15) + 15;
+                  int tempHP = myHP;
                   buffHP(hp);
                   myBag.removeItem(theItem);
                   result = "Hero drank health potion.\n"
-                            + "Hero's health increased " + hp + " points!";
+                            + "Hero's health increased " + (myHP - tempHP) + " points!";
                   break;
               case "Damage Potion":
                   int dp = RANDOM.nextInt(10) + 5;
