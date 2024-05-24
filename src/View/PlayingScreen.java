@@ -150,7 +150,7 @@ public class PlayingScreen extends GameScreen {
         break;
         case KeyEvent.VK_ENTER:
           if(dungeon.getCurrY() + dungeon.getCurrX() == 1){
-            gameScreenStack.addScreen(new BattleScreen(gameScreenStack));
+//            gameScreenStack.addScreen(new BattleScreen(gameScreenStack));
           }
           break;
 

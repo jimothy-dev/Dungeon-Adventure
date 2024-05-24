@@ -15,7 +15,6 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 
@@ -135,7 +134,7 @@ public class BattleScreen extends GameScreen {
         myBattleAssets.initialize(myHero, myMonster, false);
         myWinningAssets.initialize(myHero, myMonster, true);
         myTurnManager = new BattleTurnManager(myHero, myMonster);
-        myBattleManager = new BattleManager(myHero, myMonster, myTurnManager);
+        myBattleManager = new BattleManager(myGameScreenStack, myHero, myMonster, myTurnManager);
     }
 
     @Override
@@ -251,22 +250,24 @@ public class BattleScreen extends GameScreen {
                         }
                         break;
                     case INVENTORY:
-                        gameScreenStack.addScreen(new InventoryScreen(gameScreenStack, myHero));
+                        playSoundEffect("InventoryOpen");
+                        myGameScreenStack.addScreen(new InventoryScreen(myGameScreenStack, myHero));
                         break;
                     case ESCAPE:
                         if (currentMenu == optionMenu) {
+                            playSoundEffect("BattleRun");
                             // Handle escape option in battle
                         }
                     case RETURN:
                         if (currentMenu == returnMenu) {
                             // Handle return option upon victory
                         }
-                        gameScreenStack.backToPreviousState();
+                        myGameScreenStack.backToPreviousState();
                         break;
                     case END_GAME:
                         if (currentMenu == gameOverMenu) {
-                            gameScreenStack.clearStack();
-                            gameScreenStack.addScreen(new MainMenu(gameScreenStack));
+                            myGameScreenStack.clearStack();
+                            myGameScreenStack.addScreen(new MainMenu(myGameScreenStack));
                             // Handle end game scenario
                         }
                         break;
@@ -279,4 +280,7 @@ public class BattleScreen extends GameScreen {
     protected void keyReleased(int keyCode) {
 
     }
+
+
+
 }

@@ -119,7 +119,8 @@ public class GameScreenStack {
     return myMusicManager;
   }
 
-  public AudioManager getSoundManger() {
+  public AudioManager getSoundManager() {
     return mySoundManager;
   }
+
 }

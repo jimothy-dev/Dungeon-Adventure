@@ -122,7 +122,7 @@ public class MainMenu extends GameScreen {
         switch(optionMenu[selected]) {
           case START_GAME:
             stopBackgroundMusic();
-            gameScreenStack.addScreen(new CharacterScreen(gameScreenStack));
+            myGameScreenStack.addScreen(new CharacterScreen(myGameScreenStack));
             break;
 
           case QUIT_GAME:
@@ -131,7 +131,7 @@ public class MainMenu extends GameScreen {
 
           case BATTLE_SCREEN:
             stopBackgroundMusic();
-            gameScreenStack.addScreen(new BattleScreen(gameScreenStack, myHero, new Skeleton()));
+            myGameScreenStack.addScreen(new BattleScreen(myGameScreenStack, myHero, new Skeleton()));
             break;
 
           case SAVE_GAME:

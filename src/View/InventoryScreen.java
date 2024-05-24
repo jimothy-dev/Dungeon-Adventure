@@ -100,14 +100,16 @@ public class InventoryScreen extends GameScreen {
                 if (selected < itemOptions.length - 1) selected++;
                 break;
             case KeyEvent.VK_ESCAPE:
-                gameScreenStack.backToPreviousState();
+                playSoundEffect("BattleRun");
+                myGameScreenStack.backToPreviousState();
                 break;
             case KeyEvent.VK_ENTER:
                 if (!itemOptions[selected].equals(EMPTY)) {
-                    gameScreenStack.backToPreviousState();
+                    myGameScreenStack.backToPreviousState();
                     System.out.println(myHero.useItem(gameItems[selected]));
+                    playSoundEffect("InventoryUseItem");
                 } else {
-                    gameScreenStack.backToPreviousState();
+                    myGameScreenStack.backToPreviousState();
                 }
         }
     }

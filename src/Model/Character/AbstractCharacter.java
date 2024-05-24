@@ -301,6 +301,7 @@ public class AbstractCharacter implements Serializable {
   public String useItem(GameItem theItem) {
       String result = "Bag does not contain this item!";
       if (myBag.hasItem(theItem)) {
+
           switch (theItem.getItemName()) {
               case "Health Potion":
                   int hp = RANDOM.nextInt(15) + 15;
