@@ -113,6 +113,7 @@ public class BattleScreen extends GameScreen {
         returnMenu = new String[] {RETURN};
         selected = 0;
         playBackgroundMusic(BATTLE_MUSIC);
+        playSoundEffect("BattleStart");
         try {
             Random random = new Random();
             battleBackgroundImage = ImageIO.read(
@@ -222,13 +223,13 @@ public class BattleScreen extends GameScreen {
             case KeyEvent.VK_UP:
             case KeyEvent.VK_W:
                 if(selected > 0) selected--;
+                playSoundEffect("BattleSwitchEffect");
                 break;
             case KeyEvent.VK_DOWN:
             case KeyEvent.VK_S:
                 currentMenu = getCurrentMenu();
                 if (selected < currentMenu.length - 1) selected++;
-//                super.soundManager.playAudio();
-
+                playSoundEffect("BattleSwitchEffect");
                 break;
             case KeyEvent.VK_ENTER:
                 currentMenu = getCurrentMenu();

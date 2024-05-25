@@ -64,7 +64,7 @@ public class MainMenu extends GameScreen {
     saveLocation = new File("src/SavedGame");
     try {
       selectorImage = ImageIO.read(new File("src/Assets/Images/skeleton1.png"));
-      menuBackgroundImage = ImageIO.read(new File("src/Assets/Images/title.png"));
+      menuBackgroundImage = ImageIO.read(new File("src/Assets/Images/DungeonAdventure.png"));
     } catch (IOException e) {
       e.printStackTrace();
     }

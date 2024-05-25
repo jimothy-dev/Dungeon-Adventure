@@ -93,11 +93,17 @@ public class InventoryScreen extends GameScreen {
         switch (keyCode) {
             case KeyEvent.VK_UP:
             case KeyEvent.VK_W:
-                if (selected > 0) selected--;
+                if (selected > 0) {
+                    selected--;
+                    playSoundEffect("BattleSwitchEffect");
+                }
                 break;
             case KeyEvent.VK_DOWN:
             case KeyEvent.VK_S:
-                if (selected < itemOptions.length - 1) selected++;
+                if (selected < itemOptions.length - 1) {
+                    selected++;
+                    playSoundEffect("BattleSwitchEffect");
+                }
                 break;
             case KeyEvent.VK_ESCAPE:
                 playSoundEffect("BattleRun");
