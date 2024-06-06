@@ -3,12 +3,7 @@ package View;
 import Model.Character.*;
 import Model.GameScreen;
 import Model.GameScreenStack;
-import View.Battle.BattleAssets;
-import View.Battle.BattleLogArea;
-import View.Battle.BattleLogOut;
-import View.Battle.DrawBattleLog;
-import View.Battle.DrawCharStatus;
-import View.Battle.PlaceChars;
+import View.Battle.*;
 
 import javax.imageio.ImageIO;
 import java.awt.Color;
@@ -20,7 +15,6 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 
@@ -37,6 +31,7 @@ public class BattleScreen extends GameScreen {
      * The number of background images in assets.
      */
     private static final int DEFAULT_NUM_IMAGES = 12;
+
 
     /**
      * Music to play on battle screen.
@@ -59,14 +54,27 @@ public class BattleScreen extends GameScreen {
     private static final String ESCAPE = "Escape";
 
     /**
+     * Battle option 'return' only available upon victory.
+     */
+    private static final String RETURN = "Return";
+
+    private static final String END_GAME = "Game Over";
+    private static final String HEAL = "Heal";
+
+    private static final int ESCAPE_CHANCE = 80;
+
+    /**
      * Battle options array.
      */
     private final String[] optionMenu;
 
+    private final String[] gameOverMenu;
+    private final String[] returnMenu;
+
     /**
      * Currently selected battle option.
      */
-    private int selected;
+    private int mySelected;
 
     /**
      * Image to be used as background.
@@ -82,7 +90,14 @@ public class BattleScreen extends GameScreen {
     private final Hero myHero;
     private final BattleAssets myBattleAssets;
     private final BattleAssets myWinningAssets;
+    private final BattleTurnManager myTurnManager;
+    private final BattleManager myBattleManager;
+    private Boolean healed = false;
 
+    /**
+     * Counter to give enemy time during their turn.
+     */
+    private int enemyTurnCount = 0;
 
     /**
      * Constructor. Sets hero and monster. Sets background image.
@@ -92,10 +107,16 @@ public class BattleScreen extends GameScreen {
         super(Objects.requireNonNull(theStack));
         myHero = Objects.requireNonNull(theHero);
         myMonster = Objects.requireNonNull(theMonster);
-
-        optionMenu = new String[] {BASE_ATTACK, INVENTORY, ESCAPE};
-        selected = 0;
+        if (myHero.getName().equals("Elf")) {
+            optionMenu = new String[] {BASE_ATTACK, HEAL, INVENTORY, ESCAPE};
+        } else {
+            optionMenu = new String[] {BASE_ATTACK, INVENTORY, ESCAPE};
+        }
+        gameOverMenu = new String[] {END_GAME};
+        returnMenu = new String[] {RETURN};
+        mySelected = 0;
         playBackgroundMusic(BATTLE_MUSIC);
+        playSoundEffect("BattleStart");
         try {
             Random random = new Random();
             battleBackgroundImage = ImageIO.read(
@@ -116,10 +137,21 @@ public class BattleScreen extends GameScreen {
         myWinningAssets = new BattleAssets();
         myBattleAssets.initialize(myHero, myMonster, false);
         myWinningAssets.initialize(myHero, myMonster, true);
+        myTurnManager = new BattleTurnManager(myHero, myMonster);
+        myBattleManager = new BattleManager(myGameScreenStack, myHero, myMonster, myTurnManager);
     }
 
+    /**
+     * Used to give an amount of time for the enemy's turn.
+     */
     @Override
     protected void loop() {
+        if (!myTurnManager.getTurn() && enemyTurnCount == 20) {
+            myBattleManager.monsterTurn();
+            enemyTurnCount = 0;
+        } else if (!myTurnManager.getTurn()){
+            enemyTurnCount++;
+        }
     }
 
     /**
@@ -134,10 +166,10 @@ public class BattleScreen extends GameScreen {
         theGraphics.drawImage(battleBackgroundImage, 0, 0, FrameManager.getWidth(),
                 FrameManager.getHeight(), null);
         theGraphics.setColor(new Color(30, 30, 70,120));
-        theGraphics.fillRect(0, 0, FrameManager.getWidth(), FrameManager.getHeight());
         theGraphics.setFont(getCustomFont());
-
-        drawOptions(theGraphics);
+        if (myTurnManager.getTurn()) {
+            drawOptions(theGraphics);
+        }
         if (myMonster.checkIfDead()) {
             PlaceChars.placeChars(theGraphics, myWinningAssets);
         } else {
@@ -155,13 +187,14 @@ public class BattleScreen extends GameScreen {
         theGraphics.setFont(theGraphics.getFont().deriveFont(Font.PLAIN, 24));
         FontMetrics metrics = theGraphics.getFontMetrics();
         int optionHeight = metrics.getHeight();
-        int totalHeight = optionMenu.length * optionHeight;
+        String[] menu = getCurrentMenu();
+        int totalHeight = menu.length * optionHeight;
         int xStart = FrameManager.getWidth() * 3 / 4;
         int yStart = FrameManager.getHeight() - totalHeight; // padding
 
-        for (int i = 0; i < optionMenu.length; i++) {
-            String optionText = optionMenu[i];
-            if (i == selected) {
+        for (int i = 0; i < menu.length; i++) {
+            String optionText = menu[i];
+            if (i == mySelected) {
                 theGraphics.setColor(Color.magenta);
             } else {
                 theGraphics.setColor(Color.white);
@@ -170,23 +203,22 @@ public class BattleScreen extends GameScreen {
         }
     }
 
-
     /**
-     * Calculates the width of each option in the menu to find the max.
-     * @param graphics Graphics object used for drawing.
-     * @return int representing max width in options.
+     * Determine which menu should be displayed based on the current state.
+     * @return The appropriate menu array.
      */
-    private int getMaxOptionWidth(Graphics graphics) {
-        FontMetrics metrics = graphics.getFontMetrics();
-        int maxWidth = 0;
-        for (String option : optionMenu) {
-            int width = metrics.stringWidth(option);
-            if (width > maxWidth) {
-                maxWidth = width;
-            }
+    private String[] getCurrentMenu() {
+        if (myHero.checkIfDead()) {
+            mySelected = 0;
+            return gameOverMenu;
+        } else if (myMonster.checkIfDead()) {
+            mySelected = 0;
+            return returnMenu;
+        } else {
+            return optionMenu;
         }
-        return maxWidth;
     }
+
 
     /**
      * Navigates the battle options.
@@ -194,33 +226,71 @@ public class BattleScreen extends GameScreen {
      */
     @Override
     protected void keyPressed(int keyCode) {
+        String[] currentMenu;
         switch(keyCode) {
             case KeyEvent.VK_UP:
             case KeyEvent.VK_W:
-                if(this.selected > 0) this.selected--;
+                if(mySelected > 0) mySelected--;
+                playSoundEffect("BattleSwitchEffect");
                 break;
             case KeyEvent.VK_DOWN:
             case KeyEvent.VK_S:
-                if(this.selected < this.optionMenu.length-1) this.selected++;
-//                super.soundManager.playAudio();
+                currentMenu = getCurrentMenu();
+                if (mySelected < currentMenu.length - 1) mySelected++;
+                playSoundEffect("BattleSwitchEffect");
                 break;
             case KeyEvent.VK_ENTER:
-//                super.soundManager.playAudio();
-                switch(this.optionMenu[selected]) {
+                currentMenu = getCurrentMenu();
+                String selectedOption = currentMenu[mySelected];
+                switch (selectedOption) {
                     case BASE_ATTACK:
-System.out.println("DEBUG: Attack");
-                        myMonster.attacked(myHero.getDamage());
-                        if (myMonster.checkIfDead()) {
-                            System.out.println("Victory! You received " + Arrays.toString(myMonster.getReward()));
+                        if (myTurnManager.getTurn()) {
+                            myBattleManager.heroAttack();
+                        }
+                        break;
+                    case HEAL:
+                        if (myHero.getMaxHP() == myHero.getHP()) {
+                            System.out.println(myHero.getName() + " is already at max health!");
+                        } else if (!healed) {
+                            myBattleManager.healHero();
+                            healed = true;
+                        } else {
+                            System.out.println(myHero.getName() + " can only heal once per battle!");
                         }
                         break;
                     case INVENTORY:
-System.out.println("DEBUG: Inventory");
+                        playSoundEffect("InventoryOpen");
+                        myGameScreenStack.addScreen(new InventoryScreen(myGameScreenStack, myHero));
                         break;
+
                     case ESCAPE:
-                        gameScreenStack.backToPreviousState();
+                        if (currentMenu == optionMenu) {
+                            Random random = new Random();
+                            if (random.nextInt(100) < ESCAPE_CHANCE) {
+                                System.out.println(myHero.getName() + " failed to escape!");
+                                myTurnManager.calculateTurn();
+
+                            } else {
+                                playSoundEffect("BattleRun");
+                                stopBackgroundMusic();
+                                myGameScreenStack.clearStack();
+                                myGameScreenStack.addScreen(new MainMenu(myGameScreenStack, myHero));
+                            }
+                        }
+                        break;
+
+                    case RETURN:
+                        stopBackgroundMusic();
+                        myGameScreenStack.clearStack();
+                        myGameScreenStack.addScreen(new MainMenu(myGameScreenStack, myHero));
+                        break;
+
+                    case END_GAME:
+                        stopBackgroundMusic();
+                        myGameScreenStack.clearStack();
+                        myGameScreenStack.addScreen(new MainMenu(myGameScreenStack));
+                        break;
                 }
-                break;
         }
     }
 

@@ -2,7 +2,10 @@ package Model.Character;
 
 import Model.Items.GameItem;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -11,7 +14,7 @@ import java.util.Random;
  * @author Austin Maggert
  * @version Spring 2024
  */
-public class AbstractCharacter {
+public class AbstractCharacter implements Serializable {
 
     /**
      * myName field is the name of the character.
@@ -46,7 +49,7 @@ public class AbstractCharacter {
     /**
      * myBag field is the character's inventory bag of game items.
      */
-    private Bag myBag;
+    private final Bag myBag;
 
     /**
      * myDeathStatus is true iff character dies (hp drops to 0)
@@ -58,7 +61,7 @@ public class AbstractCharacter {
      */
     private final String myImage;
 
-    private final String DEFAULT_IMAGE_PATH = "src/Assets/Images/";
+    private static final String DEFAULT_IMAGE_PATH = "src/Assets/Images/";
 
 
     /**
@@ -71,7 +74,7 @@ public class AbstractCharacter {
      *
      * @param theName is the character's name
      * @param theHP is the character's health points
-     * @param theDamage is the character's damaeage points
+     * @param theDamage is the character's damage points
      * @param theSpeed is the character's speed points
      * @param theDodgeRate is the character's dodge rate
      * @param theItems are the items to be included in initial bag (can be empty)
@@ -175,15 +178,22 @@ public class AbstractCharacter {
     }
 
     /**
+     * Getter for dodge rate
+     * @return Character dodge rate.
+     */
+    public double getDodgeRate() {
+        return myDodgeRate;
+    }
+
+    /**
      * attack method receives another character and attempts an attack on that
-     * character. It will return truee if the attack lands, and false otherwise.
+     * character. It will return true if the attack lands, and false otherwise.
      *
      * @param theOtherCharacter is the character to be attacked
      * @return returns true when attack lands and false otherwise
      */
   public boolean attack(AbstractCharacter theOtherCharacter) {
-      boolean attackLanded = theOtherCharacter.attacked(myDamage);
-      return attackLanded;
+      return theOtherCharacter.attacked(myDamage);
   }
 
     /**
@@ -252,13 +262,31 @@ public class AbstractCharacter {
         return myDeathStatus;
     }
 
+//    /**
+//     * addItemToBag receives an item and puts it into the character's bag
+//     *
+//     * @param theItem is the item to be stored in the bag
+//     */
+//  public void addItemToBag(GameItem theItem) {
+//      myBag.addItem(theItem);
+//  }
+
+  // this method is only to be kept if a monster is capable of carrying more than one item. getReward() in monster
+    // class returns an array of GameItem. Should it instead return only the 1st item in their inventory/the only item?
     /**
-     * addItemToBag receives an item and puts it into the character's bag
-     *
-     * @param theItem is the item to be stored in the bag
+     * Method used when defeating monster to add the monster's rewards to the player's bag.
+     * @param theRewards Array of items in monster's inventory.
      */
-  public void addItemToBag(GameItem theItem) {
-      myBag.addItem(theItem);
+  public void addRewardsToBag(GameItem[] theRewards) {
+      StringBuilder sb = new StringBuilder();
+      sb.append(theRewards[0]);
+      myBag.addItem(theRewards[0]);
+      for (int i = 1; i < theRewards.length; i++){
+          sb.append(", ");
+          sb.append(theRewards[i]);
+          myBag.addItem(theRewards[i]);
+      }
+      System.out.println(sb);
   }
 
     /**
@@ -273,52 +301,85 @@ public class AbstractCharacter {
   public String useItem(GameItem theItem) {
       String result = "Bag does not contain this item!";
       if (myBag.hasItem(theItem)) {
+
           switch (theItem.getItemName()) {
               case "Health Potion":
                   int hp = RANDOM.nextInt(15) + 15;
+                  int tempHP = myHP;
                   buffHP(hp);
                   myBag.removeItem(theItem);
-                  result = "Hero drank health potion."
-                            + " Hero's health increased " + hp + " points!";
+                  result = "Hero drank health potion.\n"
+                            + "Hero's health increased " + (myHP - tempHP) + " points!";
+                  break;
               case "Damage Potion":
                   int dp = RANDOM.nextInt(10) + 5;
                   buffDamage(dp);
                   myBag.removeItem(theItem);
-                  result = "Hero drank damage potion."
-                            + " Hero's damage increased " + dp + " points!";
+                  result = "Hero drank damage potion.\n"
+                            + "Hero's damage increased " + dp + " points!";
+                  break;
               case "Speed Potion":
                   int sp = RANDOM.nextInt(3) + 1;
                   buffSpeed(sp);
                   myBag.removeItem(theItem);
-                  result = "Hero drank speed potion."
-                            + " Hero's speed increased " + sp + " points!";
+                  result = "Hero drank speed potion.\n"
+                            + "Hero's speed increased " + sp + " points!";
+                  break;
               case "Evasion Potion":
                   if (myDodgeRate <= 0.6) {
                       double ep = 0.1 * (RANDOM.nextInt(3) + 1);
                       buffDodgeRate(ep);
                       myBag.removeItem(theItem);
-                      result = "Hero drank evasion potion."
-                                + " Hero's dodge rate increased by "
+                      result = "Hero drank evasion potion.\n"
+                                + "Hero's dodge rate increased by "
                                 + (ep * 100) + " percent!";
-                  } else result = "Hero's dodge rate is maximized!"
-                                    + " Potion was not used.";
+                  } else result = "Hero's dodge rate is maximized!\n"
+                                    + "Potion was not used.";
+                  break;
               case "Archaic Boots":
                   buffSpeed(1);
                   myBag.removeItem(theItem);
-                  result = "Hero donned the Archaic Boots."
-                            + " Hero's speed increased by 1 point!";
+                  result = "Hero donned the Archaic Boots.\n"
+                            + "Hero's speed increased by 1 point!";
+                  break;
               case "Bone Sword":
                   buffDamage(10);
                   myBag.removeItem(theItem);
-                  result = "Hero picked up Bone Sword."
-                            + " Hero's damage increased by 10 points!";
+                  result = "Hero picked up Bone Sword.\n"
+                            + "Hero's damage increased by 10 points!";
+                  break;
               case "Gold Coin" :
                   result = "Hero admired the gold coin,"
-                            + " then put it back in the bag for later.";
+                            + "then put it back in the bag \nfor later.";
+                  break;
+
+              case "Time Turner" :
+                  buffSpeed(1);
+                  buffDodgeRate(.1);
+                  myBag.removeItem(theItem);
+                  result = "Hero altered time.\n"
+                          + "Hero's speed and dodge rate increased.";
+                  break;
+
+              case "Soul Charm" :
+                  buffDamage(5);
+                  myBag.removeItem(theItem);
+                  result = "Hero crushes the charm and breathes in its contents.\n"
+                          + "Hero's damage increased by 5 points.";
+                  break;
+//
+//              case "" :
+//                  result = "Hero ,"
+//                          + " \n.";
+//                  break;
           }
       }
       return result;
   }
+
+    public Bag getBag() {
+      return myBag;
+    }
 
     /**
      * inner class Bag is an inventory of game items for the character
@@ -326,7 +387,7 @@ public class AbstractCharacter {
      * @author Austin Maggert
      * @version 03may2024
      */
-  public class Bag {
+  public static class Bag implements Serializable {
 
         /**
          * myBag field stores the game items in an arraylist
@@ -334,16 +395,14 @@ public class AbstractCharacter {
       ArrayList<GameItem> myBag;
 
         /**
-         * Bag constructor recieves an array of items, cometimes empty,
+         * Bag constructor recieves an array of items, sometimes empty,
          * and initializes myBag to the contents of the array.
          *
          * @param theItems the array of game items to be initialized with
          */
       public Bag(GameItem[] theItems) {
-          myBag = new ArrayList<GameItem>();
-          for (GameItem item : theItems) {
-              myBag.add(item);
-          }
+          myBag = new ArrayList<>();
+          Collections.addAll(myBag, Objects.requireNonNull(theItems));
       }
 
         /**
@@ -352,7 +411,7 @@ public class AbstractCharacter {
          * @param theItem is the game item to be added to myBag
          */
       public void addItem(GameItem theItem) {
-          myBag.add(theItem);
+          myBag.add(Objects.requireNonNull(theItem));
       }
 
         /**
@@ -395,11 +454,12 @@ public class AbstractCharacter {
          * @param theItem is the item to be checked if it is in the bag
          * @return returns true if the item is in the bag, false otherwise
          */
-      public Boolean hasItem(GameItem theItem) {
-          Boolean result = false;
+      public boolean hasItem(GameItem theItem) {
+          boolean result = false;
           for (GameItem item : myBag) {
               if (item.getItemName().equals(theItem.getItemName())) {
                   result = true;
+                  break;
               }
           }
           return result;

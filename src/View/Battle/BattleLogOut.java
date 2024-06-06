@@ -43,7 +43,6 @@ public class BattleLogOut extends OutputStream {
         // If the character is a newline character, it indicates the end of a line
         if (byteConvert == '\n') {
             SwingUtilities.invokeLater(() -> {
-                // Append the complete line to the JTextArea
                 myBattleLogArea.append(sb.toString());
                 // Set caret position to the end of the text area
                 myBattleLogArea.setCaretPosition(myBattleLogArea.getText().length());

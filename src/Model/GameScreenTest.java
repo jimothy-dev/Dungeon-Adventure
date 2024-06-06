@@ -43,7 +43,7 @@ class GameScreenTest {
         TestGameScreen testGameScreen = new TestGameScreen(gameScreenStack);
 
         // Use reflection to access protected members
-        Field gameScreenStackField = GameScreen.class.getDeclaredField("gameScreenStack");
+        Field gameScreenStackField = GameScreen.class.getDeclaredField("myGameScreenStack");
         Field musicManagerField = GameScreen.class.getDeclaredField("myMusicManager");
         Field soundManagerField = GameScreen.class.getDeclaredField("mySoundManager");
 

@@ -19,8 +19,8 @@ public abstract class GameScreen {
   /**
    * gameScreenStack field is the stack that game screens will be put on
    */
-  protected GameScreenStack gameScreenStack;
-  private Font retroGamingFont;
+  protected GameScreenStack myGameScreenStack;
+  private Font myRetroGamingFont;
 
 
 
@@ -31,24 +31,24 @@ public abstract class GameScreen {
    * @param manager is the game screen stack this game screen will be on
    */
   protected GameScreen(GameScreenStack manager) {
-    this.gameScreenStack = manager;
+    myGameScreenStack = manager;
     try {
       GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
       Font loadedFont = Font.createFont(Font.TRUETYPE_FONT,
               Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Assets/fonts/Retro Gaming.ttf")));
       ge.registerFont(loadedFont);
       int desiredFontSize = 40;
-      retroGamingFont = loadedFont.deriveFont((float) desiredFontSize);
+      myRetroGamingFont = loadedFont.deriveFont((float) desiredFontSize);
     } catch (FontFormatException | IOException e) {
       e.printStackTrace();
     }
-    myMusicManager = gameScreenStack.getMusicManager();
-    mySoundManager = gameScreenStack.getSoundManger();
+    myMusicManager = myGameScreenStack.getMusicManager();
+    mySoundManager = myGameScreenStack.getSoundManager();
 
   }
 
   public Font getCustomFont() {
-    return retroGamingFont;
+    return myRetroGamingFont;
   }
 
   protected void playBackgroundMusic(String musicKey) {

@@ -2,6 +2,8 @@ package Model.Character;
 
 import Model.Items.GameItem;
 
+import java.util.Random;
+
 /**
  * This class represents all monsters at an abstract level.
  *
@@ -9,8 +11,14 @@ import Model.Items.GameItem;
  * @version Spring 2024
  */
 public class Monster extends AbstractCharacter {
+//    private static final String[] MONSTERS = {"Skeleton", "Leech", "Ogre", "Goblin"};
+private static final String[] MONSTERS = {"Skeleton", "Leech"};
+
+    private static final Random random = new Random();
 
     private final GameItem[] myItems;
+
+
 
     /**
      * Monster constructor provides a level of polymorphism
@@ -27,6 +35,27 @@ public class Monster extends AbstractCharacter {
         super(theName, theHP, theDamage, theSpeed, theDodgeRate, theItems);
         myItems = theItems;
     }
+
+    public static Monster getRandomMonster() {
+        Monster result = switch (MONSTERS[random.nextInt(MONSTERS.length)]) {
+            case "Skeleton" -> new Skeleton();
+            case "Leech" -> new Leech();
+            default -> throw new IllegalArgumentException("Unknown monster type");
+        };
+        return result;
+    }
+
+
+            //            case "Ogre" :
+//                result = new Ogre();
+//                break;
+//
+//            case "Goblin" :
+//                result = new Goblin();
+//                break;
+
+
+
 
     public GameItem[] getReward() {
         return myItems;

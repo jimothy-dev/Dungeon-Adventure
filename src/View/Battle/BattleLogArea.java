@@ -17,16 +17,14 @@ public class BattleLogArea extends JTextArea {
      */
     public BattleLogArea() {
         super();
-        this.setEditable(false); // read-only
-        this.setBackground(new Color(50, 50, 50, 180));
-        this.setForeground(Color.white);
+        setEditable(false); // read-only
+        setBackground(new Color(50, 50, 50, 180));
+        setForeground(Color.white);
 
         // Enable line wrapping and wrap style
-        this.setLineWrap(true);
-        this.setWrapStyleWord(true);
-
-        // Set the size and position of battleLogArea
-        this.setBounds(10, FrameManager.getHeight() - FrameManager.getHeight() / 5,
-                FrameManager.getWidth() * 2 / 3, FrameManager.getHeight() / 5);
+        setLineWrap(true);
+        setWrapStyleWord(true);
+        int boxHeight = FrameManager.getHeight() / 5;
+        setBounds(0, FrameManager.getHeight() - boxHeight, FrameManager.getWidth() * 2 / 3, boxHeight - 10);
     }
 }

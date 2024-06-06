@@ -16,7 +16,7 @@ public class Wizard extends Hero {
      * Wizard constructor creates a Wizard hero character
      */
     public Wizard() {
-        super("Wizard", 100, 25, 3, 0.1,
+        super("Wizard", 100, 25, 2, 0.1,
                 new GameItem[] {new TimeTurner(), new SoulCharm()});
     }
 }

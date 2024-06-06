@@ -1,12 +1,14 @@
 package Model.Items;
 
+import java.io.Serializable;
+
 /**
  * This class represents a game item on an abstract level.
  *
  * @author Austin Maggert
  * @version Spring 2024
  */
-public abstract class GameItem {
+public abstract class GameItem implements Serializable {
     /**
      * myName field is the name of the game item
      */
