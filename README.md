@@ -1,7 +1,7 @@
 # Dungeon Adventure 
-A Dungeon Adventure game made using Java Swing with data host SQLite.
+A monster battle game made using Java Swing.
 
-Choose your class, navigate through the dungeon, fight against monsters, collect items, and strive to survive.
+Choose your class, fight against monsters, collect items, and strive to survive.
 
 * Main class - Main.java
 * Instructions:
