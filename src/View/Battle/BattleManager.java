@@ -89,10 +89,21 @@ public class BattleManager {
     public void monsterTurn() {
         if (myMonster.getName().equals("Skeleton") && myMonster.getHP() < monsterHealthThreshold && !monsterHealed) {
             int previousHP = myMonster.getHP();
-            ((Skeleton)myMonster).heal();
-            System.out.println(myMonster.getName() + " healed " + (myMonster.getHP() -  previousHP) + " HP");
+            ((Skeleton) myMonster).heal();
+            System.out.println(myMonster.getName() + " healed " + (myMonster.getHP() - previousHP) + " HP");
+            mySoundEffectManager.playAudio("BattleHeal", false);
+            monsterHealed = true;
+        }
+        if (myMonster.getName().equals("Leech") && myMonster.getHP() < monsterHealthThreshold && !monsterHealed) {
+            int previousHP = myMonster.getHP();
+            System.out.println("Leech used Drain!");
+            myMonster.attack(myHero);
+            System.out.println(myMonster.getName() + " did " + myMonster.getDamage() + " damage to " + myHero.getName());
+            ((Leech)myMonster).heal();
+            System.out.println(myMonster.getName() + " restored " + (myMonster.getHP() -  previousHP) + " HP");
             mySoundEffectManager.playAudio("BattleHeal",false);
             monsterHealed = true;
+
         } else if (myMonster.attack(myHero)) {
             System.out.println(myMonster.getName() + " did " + myMonster.getDamage() + " damage to " + myHero.getName());
             mySoundEffectManager.playAudio("BattleHit" + RANDOM.nextInt(1, HIT_CLIPS + 1),false);

@@ -11,7 +11,9 @@ import java.util.Random;
  * @version Spring 2024
  */
 public class Monster extends AbstractCharacter {
-    private static final String[] MONSTERS = {"Skeleton", "Leech"};
+//    private static final String[] MONSTERS = {"Skeleton", "Leech", "Ogre", "Goblin"};
+private static final String[] MONSTERS = {"Skeleton", "Leech"};
+
     private static final Random random = new Random();
 
     private final GameItem[] myItems;
@@ -34,18 +36,25 @@ public class Monster extends AbstractCharacter {
         myItems = theItems;
     }
 
-//    public Monster() {
-//        this(MONSTERS[random.nextInt(MONSTERS.length)]);
-//    }
+    public static Monster getRandomMonster() {
+        Monster result = switch (MONSTERS[random.nextInt(MONSTERS.length)]) {
+            case "Skeleton" -> new Skeleton();
+            case "Leech" -> new Leech();
+            default -> throw new IllegalArgumentException("Unknown monster type");
+        };
+        return result;
+    }
 
-//    public Monster(String theMonster) {
-//        switch (theMonster) {
-//            case "Skeleton":
-//                this(theMonster, S)
+
+            //            case "Ogre" :
+//                result = new Ogre();
 //                break;
 //
-//        }
-//    }
+//            case "Goblin" :
+//                result = new Goblin();
+//                break;
+
+
 
 
     public GameItem[] getReward() {

@@ -352,6 +352,26 @@ public class AbstractCharacter implements Serializable {
                   result = "Hero admired the gold coin,"
                             + "then put it back in the bag \nfor later.";
                   break;
+
+              case "Time Turner" :
+                  buffSpeed(1);
+                  buffDodgeRate(.1);
+                  myBag.removeItem(theItem);
+                  result = "Hero altered time.\n"
+                          + "Hero's speed and dodge rate increased.";
+                  break;
+
+              case "Soul Charm" :
+                  buffDamage(5);
+                  myBag.removeItem(theItem);
+                  result = "Hero crushes the charm and breathes in its contents.\n"
+                          + "Hero's damage increased by 5 points.";
+                  break;
+//
+//              case "" :
+//                  result = "Hero ,"
+//                          + " \n.";
+//                  break;
           }
       }
       return result;
